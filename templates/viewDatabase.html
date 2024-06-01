@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block head%} 
+<h1>Database</h1>
+{% endblock %}
+
+
+{% block body%} 
+<p>Lorem ipsum sample babyy</p>
+<nav>
+    <a href="{{ url_for('index') }}"><button>Return to Landing Page</button></a>
+</nav>
+
+<div class="main-table">
+    <h1>Applicants</h1>
+
+    <table>
+        <tr>
+            <th>SSS Number</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Middle Initial</th>
+            <th>Suffix</th>
+            <!-- <th>Birth Date</th> -->
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>ZIP Code</th>
+            <th>Phone 1</th>
+            <th>Phone 2</th>
+            <th>Email</th>
+            <th>Criminal Conviction Status</th>
+            <th>Reason for Conviction</th>
+            <th>Actions</th>
+        </tr>
+        {% for applicant in applications %}
+            <tr>
+                <td>{{ applicant.sss_number }}</td>
+                <td>{{ applicant.given_name }}</td>
+                <td>{{ applicant.last_name }}</td>
+                <td>{{ applicant.middle_initial }}</td>
+                <td>{{ applicant.suffix }}</td>
+                <!-- <td>{{ applicant.birth_date }}</td> -->
+                <td>{{ applicant.address }}</td>
+                <td>{{ applicant.city }}</td>
+                <td>{{ applicant.state }}</td>
+                <td>{{ applicant.zip_code }}</td>
+                <td>{{ applicant.phone_1 }}</td>
+                <td>{{ applicant.phone_2 }}</td>
+                <td>{{ applicant.email }}</td>
+                <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
+                <td>{{ applicant.reason_for_conviction }}</td>
+                <td>Delete</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}

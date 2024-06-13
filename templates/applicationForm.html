@@ -1,80 +1,314 @@
 {% extends 'base.html' %}
 
 {% block head%} 
-<h1>Application Form</h1>
+<!-- <h1>Application Form</h1> -->
 {% endblock %}
 
 
 {% block body%} 
-<p>Lorem ipsum sample babyy</p>
-<nav>
-    <a href="{{ url_for('index') }}"><button>Return to Landing Page</button></a>
-</nav>
+<!-- Background Image -->
+<style>
+body {
+    background-image: url('/static/images/ApplicationFormBGV1.png');
+    background-color: #F8F9FA;
+    background-size: cover; /* Cover the entire background */
+    background-position: center; /* Center the background */
+    background-repeat: no-repeat; /* Prevent background image from repeating */
+    min-height: 100vh; /* Ensure the wrapper covers the entire viewport height */
+    background-attachment: fixed;
+}
+</style>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#personal-information">Personal Information</a></li>
+            <li><a href="#desired-employment">Desired Employment</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#work-experience">Work Experience</a></li>
+            <li><a href="#major-skills">Major Skills</a></li>
+            <li><a href="#confirm-submission">Confirm Submission</a></li>
+            <li><a href="{{ url_for('index') }}">Return to Landing Page</a></li>
+        </ul>
+    </nav>
+</header>
+
 
 <form method="POST" action="">
-    <div>
-        <label for="sss_number">SSS Number:</label>
-        <input type="number" id="sss_number" name="sss_number" required>
-    </div>
-    <div>
-        <label for="given_name">Given Name:</label>
-        <input type="text" id="given_name" name="given_name" required>
-    </div>
-    <div>
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" required>
-    </div>
-    <div>
-        <label for="middle_initial">Middle Initial:</label>
-        <input type="text" id="middle_initial" name="middle_initial">
-    </div>
-    <div>
-        <label for="suffix">Suffix:</label>
-        <input type="text" id="suffix" name="suffix">
-    </div>
-    <!-- <div>
-        <label for="birth_date">Birth Date:</label>
-        <input type="date" id="birth_date" name="birth_date">
-    </div> -->
-    <div>
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required>
-    </div>
-    <div>
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" required>
-    </div>
-    <div>
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" required>
-    </div>
-    <div>
-        <label for="zip_code">ZIP Code:</label>
-        <input type="text" id="zip_code" name="zip_code" required>
-    </div>
-    <div>
-        <label for="phone_1">Phone 1:</label>
-        <input type="text" id="phone_1" name="phone_1" required>
-    </div>
-    <div>
-        <label for="phone_2">Phone 2:</label>
-        <input type="text" id="phone_2" name="phone_2" required>
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="criminal_conviction_status">Criminal Conviction Status:</label>
-        <input type="checkbox" id="criminal_conviction_status" name="criminal_conviction_status">
-    </div>
-    <div>
-        <label for="reason_for_conviction">Reason for Conviction:</label>
-        <textarea id="reason_for_conviction" name="reason_for_conviction"></textarea>
-    </div>
-    <div>
-        <button type="submit">Submit</button>
-    </div>
+    <section id="personal-information" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Personal Information</h1>
+        </div>  
+
+        <div class="all-inputs-container">
+            <div class="grid-inputs-container">
+                <div class="input-box sss-number-div">
+                    <label for="sss_number" class="input-label">SSS Number</label>
+                    <input type="number" id="sss_number" name="sss_number" required>
+                </div>
+                
+                <div class="name-div">
+                    <div class="input-box">
+                        <label for="given_name" class="input-label">Given Name</label>
+                        <input type="text" id="given_name" name="given_name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="middle_initial" class="input-label">Middle Initial</label>
+                        <input type="text" id="middle_initial" name="middle_initial">
+                    </div>
+                    <div class="input-box">
+                        <label for="last_name" class="input-label">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="suffix" class="input-label">Suffix</label>
+                        <input type="text" id="suffix" name="suffix">
+                    </div>
+                </div>
+                
+                <div class="input-box">
+                    <label for="birth_date" class="input-label">Birth Date</label>
+                    <input type="date" id="birth_date" name="birth_date">
+                </div>
+                
+                <div class="address-div">
+                    <div class="input-box">
+                        <label for="address" class="input-label">Address</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="city" class="input-label">City</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="state" class="input-label">State</label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="zip_code" class="input-label">ZIP Code</label>
+                        <input type="text" id="zip_code" name="zip_code" required>
+                    </div>
+                </div>
+                
+                <div class="contacts-div">
+                    <div class="input-box">
+                        <label for="phone_1" class="input-label">Phone 1</label>
+                        <input type="text" id="phone_1" name="phone_1" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="phone_2" class="input-label">Phone 2</label>
+                        <input type="text" id="phone_2" name="phone_2" required>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-box">
+                            <label for="email" class="input-label">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="criminal-conviction-status-checkbox-div">
+                    <label for="criminal_conviction_status" class="input-label">Have you ever been convicted of a crime other than a minor traffic incident:</label>
+                    <input type="checkbox" id="criminal_conviction_status" name="criminal_conviction_status">
+                </div>
+                
+                <div class="input-box reason_for_conviction_div">
+                    <label for="reason_for_conviction" class="input-label">If Yes, please explain:</label>
+                    <textarea id="reason_for_conviction" name="reason_for_conviction"></textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="desired-employment" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Desired Employment</h1>
+        </div>  
+
+        <div class="all-inputs-container">
+            <div class="input-box">
+                <label class="input-label">Employment Type</label>
+                <div class="radio-buttons">
+                    <input type="radio" id="full_time" name="employment_type" value="full_time">
+                    <label for="full_time">Full Time</label>
+                    <input type="radio" id="part_time" name="employment_type" value="part_time">
+                    <label for="part_time">Part Time</label>
+                </div>
+            </div>
+            
+            <div class="input-box">
+                <label for="position_applying_for" class="input-label">Position Applying For</label>
+                <input type="text" id="position_applying_for" name="position_applying_for" required>
+            </div>
+            
+            <div class="input-box">
+                <label for="desired_salary" class="input-label">Desired Salary ($)</label>
+                <input type="number" id="desired_salary" name="desired_salary" required>
+            </div>
+            
+            <div class="input-box">
+                <label for="start_date" class="input-label">Date You Can Start</label>
+                <input type="date" id="start_date" name="start_date" required>
+            </div>
+                
+        
+    </section>
+
+    <section id="education" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Education</h1>
+        </div>  
+
+        <div class="all-inputs-container">
+            <p>
+                You may have multiple entries for each educational level.
+            </p>
+        
+            <div id="education-section" class="education-grid">
+                <div class="education-entry">
+                    <div class="input-box">
+                        <label for="school" class="input-label">School</label>
+                        <input type="text" name="school[]" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="location" class="input-label">Location</label>
+                        <input type="text" name="location[]" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="date-graduated" class="input-label">Date Graduated</label>
+                        <input type="date" name="date-graduated[]" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="attainment" class="input-label">Attainment</label>
+                        <input type="text" name="attainment[]" required>
+                    </div>
+                    <button type="button" class="delete-btn" onclick="deleteEducationEntry(this)">Delete Entry</button>
+                </div>
+            </div>
+            
+            <button type="button" onclick="addEducation()">Add Another Entry</button>
+        </div>
+    </section>
+
+    <section id="work-experience" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Work Experience</h1>
+        </div>  
+    
+        <div class="all-inputs-container">
+            <p>
+                You may have multiple entries for each work experience.
+            </p>
+        
+            <div id="work-experience-section" class="work-experience-grid">
+                <!-- Each work experience entry is contained within its own div -->
+                <div class="work-experience-entry">
+                    <div class="input-box">
+                        <label for="company_name" class="input-label">Company Name</label>
+                        <input type="text" name="company_name[]" required>
+                    </div>
+                    <div class="period-div">
+                        <div class="input-box">
+                            <label for="start_date" class="input-label">Start Date</label>
+                            <input type="date" name="start_date[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="end_date" class="input-label">End Date</label>
+                            <input type="date" name="end_date[]" required>
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <label for="position" class="input-label">Position</label>
+                        <input type="text" name="position[]" required>
+                    </div>
+                    <div class="input-box">
+                        <label for="reason_for_leaving" class="input-label">Reason for Leaving</label>
+                        <textarea name="reason_for_leaving[]" required></textarea>
+                    </div>
+                    <button type="button" class="delete-btn" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
+                </div>
+            </div>
+            <button type="button" onclick="addWorkExperience()">Add Another Entry</button>
+            <div class="present-employer-contact-checkbox-div">
+                <label for="present_employer_contact_permission" class="input-label">May we contact your present employer?</label>
+                <input type="checkbox" id="present_employer_contact_permission" name="present_employer_contact_permission">
+            </div>
+            
+            <div class="supervisor-contact-info" style="display: none;">
+                <div class="input-box">
+                    <label for="supervisor_name" class="input-label">Supervisor's Name</label>
+                    <input type="text" id="supervisor_name" name="supervisor_name">
+                </div>
+                <div class="input-box">
+                    <label for="supervisor_contact_number" class="input-label">Supervisor's Contact Number</label>
+                    <input type="text" id="supervisor_contact_number" name="supervisor_contact_number">
+                </div>
+            </div>
+            
+            <div class="no-contact-reason" style="display: none;">
+                <div class="input-box">
+                    <label for="no_contact_reason" class="input-label">Reason for not contacting present employer:</label>
+                    <textarea id="no_contact_reason" name="no_contact_reason"></textarea>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+    </section>
+    
+
+    <section id="major-skills" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Major Skills</h1>
+        </div>  
+    
+        <div class="all-inputs-container">
+            <div class="input-box">
+                <label for="major_skills" class="input-label">List Major Skills (separate by comma):</label>
+                <textarea id="major_skills" name="major_skills" rows="4" placeholder="ex. Video Editing, Photo Editing, Graphic Design" required></textarea>
+            </div>
+            
+        </div>
+    </section>
+    
+    <section id="confirm-submission" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Confirm Submission</h1>
+        </div>  
+
+        <div class="all-inputs-container">
+
+            <p class="input-box">
+                Please review all of your information before submitting.
+            </p>
+
+            <p class="input-box">
+                I certify that the information contained in this application is accurate and correct. I understand that any omission or erroneous may be ground for dismissal.
+            </p>
+            <div class="input-box">
+                <label for="signature" class="input-label">Signature (Image):</label>
+                <input type="file" id="signature" name="signature" accept="image/*" required>
+            </div>
+            
+            <div class="input-box">
+                <label for="date_of_application_submission" class="input-label">Date of Application Submission:</label>
+                <input type="date" id="date_of_application_submission" name="date_of_application_submission" readonly required>
+            </div>
+            
+            
+
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    </section>
+    
 </form>
 
+<script src="/static/js/scroll.js"></script>
+
 {% endblock %}
+
+<!-- python3 app.py -->

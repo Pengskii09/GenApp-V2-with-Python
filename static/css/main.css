@@ -1,4 +1,309 @@
-body {
-    margin: 20px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900
+.work-sans-<uniquifier> {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 200 to 800
+
+.manrope-<uniquifier> {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+/* CSS Reset */
+
+/* 0% opacity (fully transparent): 00
+10% opacity: 1A
+20% opacity: 33
+30% opacity: 4D
+40% opacity: 66
+50% opacity: 80
+60% opacity: 99
+70% opacity: B3
+80% opacity: CC
+90% opacity: E6
+100% opacity (fully opaque): FF */
+
+html {
+    scroll-behavior: smooth;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding-top: 60px;
+    font-family: "Manrope", sans-serif;
+}
+
+
+header {
+    display: flex;
+    position: fixed;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1.05rem;
+    font-weight: 500;
+    width: 100vw;
+    top: 0; /* Position at the top */
+    left: 0; /* Position at the left */
+    z-index: 1000; /* Ensure it is above other content */
+    height: 60px;
+    background-image: url('/static/images/ApplicationFormBGV1.png');
+    background-color: #F8F9FA;
+    background-size: cover; /* Scale the background image to cover the entire header */
+    background-position: center; /* Center the background */
+    background-repeat: no-repeat; /* Prevent background image from repeating */
+    background-attachment: fixed;
+}
+
+
+
+li, a {
+    text-decoration: none;
+    color: #5A189A;
+}
+
+.nav-links {
+    list-style: none;
+    /* border: 1px solid black; */
+}
+
+.nav-links li {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav-links li a {
+    transition: all 0.3 ease 0s;
+}
+
+.nav-links li a:hover {
+    color: #5A189A;
+    text-decoration: underline;
+}
+
+.all-inputs-container {
+    margin-top: 50px;
+}
+
+.form-section {
+    border: 1px solid #6C757D;
+    border-radius: 20px;
+    width: 60%;
+    margin: 30px auto;
+    /* padding: 15px; */
+    /* padding: 20px 20px 20px 20px; top, right, bottom, left */
+    background-color: #F8F9FA99; /* 99 represents 0.6 opacity */
+    overflow: auto;
+    padding-bottom: 5px;
+}
+
+.section-title-container {
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.section-title {
+    font-weight: 700;
+    margin: 15px 25px;
+}
+
+.all-inputs-container {
+    margin: 15px 25px;
+    font-size: 0.9rem;
+}
+
+.grid-inputs-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+}
+
+.name-div {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.address-div {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.contacts-div {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.criminal-conviction-status-checkbox-div {
+    display: flex;
+    padding: 3px;
+    margin: 5px;
+    color: #495057;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+.input-box {
+    /* border: 0.1px solid black; */
+    padding: 3px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    color: #495057;
+}
+
+.input-label {
+    font-weight: 500;
+    margin: 5px;
+    /* border: 0.1px solid black; */
+}
+
+.reason_for_conviction_div {
+    display: none; /* Hide the second div initially */
+  }
+  
+  .criminal-conviction-status-checkbox-div:checked ~ .reason_for_conviction_div {
+    display: flex;
+    flex-direction: column; /* Show the second div only when the checkbox is checked */
+  }
+  
+
+/* EDUCATION SECTION */
+.education-entry {
+    border: 1px solid #CED4DA;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 10px;
+    margin: 10px;
+    gap: 10px;
+}
+
+/* WORK EXPERIENCE SECTION */
+.work-experience-entry {
+    border: 1px solid #CED4DA;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.period-div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+}
+
+.present-employer-contact-checkbox-div {
+    display: flex;
+    padding: 3px;
+    margin: 5px;
+    color: #495057;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+/* Hide the supervisor contact info and reason for conviction div initially */
+.supervisor-contact-info,
+.no-contact-reason {
+    display: none;
+}
+
+/* Show the supervisor contact info when present employer contact permission checkbox is checked */
+#present_employer_contact_permission:checked ~ .supervisor-contact-info {
+    display: block;
+}
+
+/* Show the reason for conviction div when present employer contact permission checkbox is unchecked */
+#present_employer_contact_permission:not(:checked) ~ .no-contact-reason {
+    display: block;
+}
+
+
+
+.form-section input[type="text"],
+.form-section input[type="number"],
+.form-section input[type="date"],
+.form-section input[type="email"],
+.form-section textarea,
+.form-section input[type="checkbox"] {
+    /* Remove default styling */
+    appearance: none;
+    /* Reset border, background, and outline */
+    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
+    outline: none;
+    /* Additional styling as needed */
+    padding: 8px 10px;
+    border: 1px solid #BDBDBD;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: medium;
+    color: #343A40;
+
+}
+
+.form-section input[type="checkbox"] {
+    /* Set checkbox dimensions */
+    width: 20px;
+    height: 20px;
+    /* Style checkbox */
+    border: 1px solid #BDBDBD;
+    border-radius: 3px;
+    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
+    outline: none;
+    /* Add custom checkmark */
+    position: relative;
+}
+
+.form-section input[type="checkbox"]:checked::before {
+    content: "✔";
+    color: #C77DFF;
+    display: block;
+    position: absolute;
+    transform: translate(-65%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 10px;
+}
+
+/* Show custom checkmark when checkbox is checked */
+.form-section input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
+
+
+/* Styling for input elements while active */
+.form-section input[type="text"]:focus,
+.form-section input[type="number"]:focus,
+.form-section input[type="date"]:focus,
+.form-section input[type="email"]:focus,
+.form-section textarea:focus,
+.form-section input[type="checkbox"]:focus {
+    box-sizing: border-box;
+    border-color: #C77DFF; /* Change border color to blue when active */
+    border-width: 1.5px; /* Increase border width */
+}
+

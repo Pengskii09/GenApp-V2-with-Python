@@ -105,3 +105,5 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
+
+# Command to enter python virtual environment: 'source env/bin/activate'

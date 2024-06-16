@@ -9,7 +9,7 @@
 <!-- Background Image -->
 <style>
 body {
-    background-image: url('/static/images/ApplicationFormBGV1.png');
+    background-image: url('/static/images/ApplicationFormBGV2blurryGrain.png');
     background-color: #F8F9FA;
     background-size: cover; /* Cover the entire background */
     background-position: center; /* Center the background */
@@ -19,7 +19,7 @@ body {
 }
 </style>
 
-<header>
+<header class="application_header">
     <nav>
         <ul class="nav-links">
             <li><a href="#personal-information">Personal Information</a></li>
@@ -167,43 +167,47 @@ body {
         
             <div id="education-section" class="education-grid">
                 <div class="education-entry">
-                    <div class="input-box">
-                        <label for="school" class="input-label">School</label>
-                        <input type="text" name="school[]" required>
+                    <p class="entry_count_label">Entry 1</p>
+                    <div class="education-input-fields"> 
+                        <div class="input-box">
+                            <label for="school" class="input-label">School</label>
+                            <input type="text" name="school[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="location" class="input-label">Location</label>
+                            <input type="text" name="location[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="date-graduated" class="input-label">Date Graduated</label>
+                            <input type="date" name="date-graduated[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="attainment" class="input-label">Attainment</label>
+                            <input type="text" name="attainment[]" required>
+                        </div>
                     </div>
-                    <div class="input-box">
-                        <label for="location" class="input-label">Location</label>
-                        <input type="text" name="location[]" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="date-graduated" class="input-label">Date Graduated</label>
-                        <input type="date" name="date-graduated[]" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="attainment" class="input-label">Attainment</label>
-                        <input type="text" name="attainment[]" required>
-                    </div>
-                    <button type="button" class="delete-btn" onclick="deleteEducationEntry(this)">Delete Entry</button>
+                    <button type="button" class="delete-bt button_version_1 " onclick="deleteEducationEntry(this)">Delete Entry</button>
                 </div>
             </div>
             
-            <button type="button" onclick="addEducation()">Add Another Entry</button>
+            <button type="button" class="button_version_1" onclick="addEducation()">Add Another Entry</button>
         </div>
     </section>
 
     <section id="work-experience" class="form-section">
         <div class="section-title-container">
             <h1 class="section-title">Work Experience</h1>
-        </div>  
+        </div>
     
         <div class="all-inputs-container">
             <p>
                 You may have multiple entries for each work experience.
             </p>
-        
+    
             <div id="work-experience-section" class="work-experience-grid">
-                <!-- Each work experience entry is contained within its own div -->
+                <!-- Existing work experience entry template -->
                 <div class="work-experience-entry">
+                    <p class="entry_count_label">Entry 1</p>
                     <div class="input-box">
                         <label for="company_name" class="input-label">Company Name</label>
                         <input type="text" name="company_name[]" required>
@@ -226,15 +230,17 @@ body {
                         <label for="reason_for_leaving" class="input-label">Reason for Leaving</label>
                         <textarea name="reason_for_leaving[]" required></textarea>
                     </div>
-                    <button type="button" class="delete-btn" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
+                    <button type="button" class="delete-btn button_version_1" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
                 </div>
             </div>
-            <button type="button" onclick="addWorkExperience()">Add Another Entry</button>
+    
+            <button type="button" class="button_version_1" onclick="addWorkExperience()">Add Another Entry</button>
+            
             <div class="present-employer-contact-checkbox-div">
                 <label for="present_employer_contact_permission" class="input-label">May we contact your present employer?</label>
                 <input type="checkbox" id="present_employer_contact_permission" name="present_employer_contact_permission">
             </div>
-            
+    
             <div class="supervisor-contact-info" style="display: none;">
                 <div class="input-box">
                     <label for="supervisor_name" class="input-label">Supervisor's Name</label>
@@ -245,18 +251,16 @@ body {
                     <input type="text" id="supervisor_contact_number" name="supervisor_contact_number">
                 </div>
             </div>
-            
+    
             <div class="no-contact-reason" style="display: none;">
                 <div class="input-box">
                     <label for="no_contact_reason" class="input-label">Reason for not contacting present employer:</label>
                     <textarea id="no_contact_reason" name="no_contact_reason"></textarea>
                 </div>
             </div>
-            
-            
-            
         </div>
     </section>
+    
     
 
     <section id="major-skills" class="form-section">
@@ -285,7 +289,7 @@ body {
             </p>
 
             <p class="input-box">
-                I certify that the information contained in this application is accurate and correct. I understand that any omission or erroneous may be ground for dismissal.
+                I certify that the information contained in this application is accurate and correct. I understand that any omission or error may be grounds for dismissal.
             </p>
             <div class="input-box">
                 <label for="signature" class="input-label">Signature (Image):</label>
@@ -297,10 +301,8 @@ body {
                 <input type="date" id="date_of_application_submission" name="date_of_application_submission" readonly required>
             </div>
             
-            
-
             <div>
-                <button type="submit">Submit</button>
+                <button class="submit_button" type="submit">Submit</button>
             </div>
         </div>
     </section>

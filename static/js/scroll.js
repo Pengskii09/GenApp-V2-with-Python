@@ -19,6 +19,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 
+// PERSONAL INFORMATION SECTION
+// Checks criminal_conviction_status checkbox and displays additional question based on status
 const checkbox = document.getElementById('criminal_conviction_status');
 const reasonForConvictionDiv = document.querySelector('.reason_for_conviction_div');
 
@@ -30,45 +32,66 @@ checkbox.addEventListener('click', function() {
   }
 });
 
-function addEducation() {
-    const educationSection = document.getElementById('education-section');
-    const newEducationEntry = document.createElement('div');
-    newEducationEntry.classList.add('education-entry');
-    newEducationEntry.innerHTML = `
-        <div class="input-box">
-            <label for="school" class="input-label">School</label>
-            <input type="text" name="school[]" required>
-        </div>
-        <div class="input-box">
-            <label for="location" class="input-label">Location</label>
-            <input type="text" name="location[]" required>
-        </div>
-        <div class="input-box">
-            <label for="date-graduated" class="input-label">Date Graduated</label>
-            <input type="date" name="date-graduated[]" required>
-        </div>
-        <div class="input-box">
-            <label for="attainment" class="input-label">Attainment</label>
-            <input type="text" name="attainment[]" required>
-        </div>
-        <button type="button" class="delete-btn" onclick="deleteEducationEntry(this)">Delete Entry</button>
-    `;
-    educationSection.appendChild(newEducationEntry);
-}
 
-function deleteEducationEntry(button) {
-    const entryToDelete = button.parentElement;
-    entryToDelete.remove();
-}
+let educationEntryCount = 1; // Track the number of education entries dynamically
+
+    function addEducation() {
+        educationEntryCount++; // Increment the education entry count
+        const educationSection = document.getElementById('education-section');
+        const newEducationEntry = document.createElement('div');
+        newEducationEntry.classList.add('education-entry');
+        newEducationEntry.innerHTML = `
+            <p class="entry_count_label">Entry ${educationEntryCount}</p>
+            <div class="education-input-fields">
+                <div class="input-box">
+                    <label for="school" class="input-label">School</label>
+                    <input type="text" name="school[]" required>
+                </div>
+                <div class="input-box">
+                    <label for="location" class="input-label">Location</label>
+                    <input type="text" name="location[]" required>
+                </div>
+                <div class="input-box">
+                    <label for="date-graduated" class="input-label">Date Graduated</label>
+                    <input type="date" name="date-graduated[]" required>
+                </div>
+                <div class="input-box">
+                    <label for="attainment" class="input-label">Attainment</label>
+                    <input type="text" name="attainment[]" required>
+                </div>
+            </div>
+            <button type="button" class="delete-bt button_version_1" onclick="deleteEducationEntry(this)">Delete Entry</button>
+        `;
+        educationSection.appendChild(newEducationEntry);
+    }
+
+    function deleteEducationEntry(button) {
+        const entryToDelete = button.parentElement;
+        entryToDelete.remove();
+
+        // Update entry count labels after deletion
+        const entryLabels = document.querySelectorAll('.entry_count_label');
+        entryLabels.forEach((label, index) => {
+            label.textContent = `Entry ${index + 1}`;
+        });
+
+        // Reset educationEntryCount to the current number of entries
+        educationEntryCount = entryLabels.length;
+    }
+
 
 // WORK EXPERIENCE SECTION
 // Add new entries of work experience
+let workExperienceEntryCount = 1; // Track the number of work experience entries dynamically
+
 function addWorkExperience() {
+    workExperienceEntryCount++; // Increment the work experience entry count
     const workExperienceSection = document.getElementById('work-experience-section');
     const newWorkExperienceEntry = document.createElement('div');
     newWorkExperienceEntry.classList.add('work-experience-entry');
 
     newWorkExperienceEntry.innerHTML = `
+        <p class="entry_count_label">Entry ${workExperienceEntryCount}</p>
         <div class="input-box">
             <label for="company_name" class="input-label">Company Name</label>
             <input type="text" name="company_name[]" required>
@@ -91,7 +114,7 @@ function addWorkExperience() {
             <label for="reason_for_leaving" class="input-label">Reason for Leaving</label>
             <textarea name="reason_for_leaving[]" required></textarea>
         </div>
-        <button type="button" class="delete-btn" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
+        <button type="button" class="delete-btn button_version_1" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
     `;
     workExperienceSection.appendChild(newWorkExperienceEntry);
 }
@@ -99,6 +122,15 @@ function addWorkExperience() {
 function deleteWorkExperienceEntry(button) {
     const entryToDelete = button.parentElement;
     entryToDelete.remove();
+
+    // Update entry count labels after deletion
+    const entryLabels = document.querySelectorAll('.work-experience-entry .entry_count_label');
+    entryLabels.forEach((label, index) => {
+        label.textContent = `Entry ${index + 1}`;
+    });
+
+    // Reset workExperienceEntryCount to the current number of entries
+    workExperienceEntryCount = entryLabels.length;
 }
 
 

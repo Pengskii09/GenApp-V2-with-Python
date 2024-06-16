@@ -1,16 +1,48 @@
 {% extends 'base.html' %}
 
 {% block head%} 
-<h1>Landing Page!</h1>
 {% endblock %}
 
 
 {% block body%} 
-<p>Lorem ipsum sample babyy</p>
+<style>
+    body {
+        background-image: url('/static/images/Landing\ PageBG2.png');
+        background-color: #F8F9FA;
+        background-size: cover; /* Cover the entire background */
+        background-position: center; /* Center the background */
+        background-repeat: no-repeat; /* Prevent background image from repeating */
+        min-height: 100vh; /* Ensure the wrapper covers the entire viewport height */
+        background-attachment: fixed;
+    }
+</style>
 
-<nav>
-    <a href="{{ url_for('application_form') }}"><button>Application Form</button></a>
-    <a href="{{ url_for('view_database') }}"><button>View Database</button></a>
-</nav>
+<header class="landing_page_header">
+    <img src="/static/images/Logo.png" alt="Logo" class="logo">
+    <nav>
+        <ul class="nav-links landing_page_nav_links">
+            <li><a href="{{ url_for('application_form') }}">Apply</a></li>
+            <li><a href="{{ url_for('view_database') }}">View Database</a></li>
+            <!-- <li><a href="#about">About</a></li> -->
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="content">
+        <div class="left-side">
+            <h1 class="main-title">Take the Next Step in Your Career: Apply for Your Dream Job Today!</h1>
+            <a href="{{ url_for('application_form') }}" class="submit_button">Apply Now!</a>
+        </div>
+        <div class="right-side">
+            <img class="laptop_girl" src="/static/images/Laptop Girl.png" alt="Image" class="image">
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<!-- <div>
+
+</div> -->
 
 {% endblock %}

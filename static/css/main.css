@@ -9,6 +9,19 @@
   font-style: normal;
 } */
 
+/* Spline Sans */
+@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap');
+/* // <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 300 to 700
+
+.spline-sans-<uniquifier> {
+  font-family: "Spline Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 /* // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 200 to 800
@@ -34,6 +47,16 @@
 90% opacity: E6
 100% opacity (fully opaque): FF */
 
+:root {
+    --light-purple: #E0AAFF;
+    --medium-purple: #C77DFF;
+    --dark-purple: #9D4EDD;
+    --deep-purple: #7B2CBF;
+    --light-gray: #F8F9FA;
+    --gray: #CED4DA;
+    --dark-gray: #6C757D;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -48,34 +71,60 @@ body {
     margin: 0;
     padding-top: 60px;
     font-family: "Manrope", sans-serif;
+    
 }
 
 
-header {
+.application_header {
+    font-family: "Spline Sans", sans-serif;
     display: flex;
     position: fixed;
     justify-content: space-around;
     align-items: center;
-    font-size: 1.05rem;
-    font-weight: 500;
     width: 100vw;
     top: 0; /* Position at the top */
     left: 0; /* Position at the left */
     z-index: 1000; /* Ensure it is above other content */
     height: 60px;
-    background-image: url('/static/images/ApplicationFormBGV1.png');
+    background-image: url('/static/images/ApplicationFormBGV2blurry.png');
     background-color: #F8F9FA;
     background-size: cover; /* Scale the background image to cover the entire header */
     background-position: center; /* Center the background */
     background-repeat: no-repeat; /* Prevent background image from repeating */
     background-attachment: fixed;
+    box-shadow: 3px 3px 5px #abb4bb1a; 
 }
 
+.button_version_1 {
+    display: inline-block;
+    width: 15rem; /* Fixed width */
+    padding: 8px 10px;
+    margin: 10px; /* Add margin if needed */
+    border: 1px solid #BDBDBD; /* Use border color variable */
+    border-radius: 10px; /* Slightly rounded corners */
+    background-color: #F8F9FAE6; /* Use background color variable */
+    color: #343A40; /* Use text color variable */
+    font-size: 0.9rem; /* Font size */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline for links */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.2s, border-color 0.2s; /* Transition effects */
+}
 
+.button_version_1:hover {
+    color: var(--light-gray);
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple); /* Darker border color on hover */
+}
+
+.button_version_1:active {
+    color: #343A40;
+    background-color: var(--light-purple); /* Even darker background color when clicked */
+    border-color: var(--light-purple); /* Even darker border color when clicked */
+}
 
 li, a {
     text-decoration: none;
-    color: #5A189A;
 }
 
 .nav-links {
@@ -90,6 +139,7 @@ li, a {
 
 .nav-links li a {
     transition: all 0.3 ease 0s;
+    color: #5A189A;
 }
 
 .nav-links li a:hover {
@@ -111,6 +161,83 @@ li, a {
     background-color: #F8F9FA99; /* 99 represents 0.6 opacity */
     overflow: auto;
     padding-bottom: 5px;
+    box-shadow: 2px 2px 5px #6C757D66,   /* Right and bottom */
+                -2px 2px 5px #6C757D66;  /* Left */
+}
+
+.form-section p {
+    padding: 3px;
+    margin: 10px 5px;
+    font-size: medium;
+}
+
+
+
+
+.form-section input[type="text"],
+.form-section input[type="number"],
+.form-section input[type="date"],
+.form-section input[type="email"],
+.form-section textarea,
+.form-section input[type="checkbox"] {
+    /* Remove default styling */
+    appearance: none;
+    /* Reset border, background, and outline */
+    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
+    outline: none;
+    /* Additional styling as needed */
+    padding: 8px 10px;
+    border: 1px solid #BDBDBD;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: medium;
+    color: #343A40;
+
+}
+
+.form-section input[type="checkbox"] {
+    /* Set checkbox dimensions */
+    width: 20px;
+    height: 20px;
+    /* Style checkbox */
+    border: 1px solid #BDBDBD;
+    border-radius: 3px;
+    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
+    outline: none;
+    /* Add custom checkmark */
+    position: relative;
+}
+
+.form-section input[type="checkbox"]:checked::before {
+    content: "✔";
+    color: #C77DFF;
+    display: block;
+    position: absolute;
+    transform: translate(-65%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    text-align: center;
+    line-height: 10px;
+}
+
+/* Show custom checkmark when checkbox is checked */
+.form-section input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
+
+
+/* Styling for input elements while active */
+.form-section input[type="text"]:focus,
+.form-section input[type="number"]:focus,
+.form-section input[type="date"]:focus,
+.form-section input[type="email"]:focus,
+.form-section textarea:focus,
+.form-section input[type="checkbox"]:focus {
+    box-sizing: border-box;
+    border-color: #C77DFF; /* Change border color to blue when active */
+    border-width: 1.5px; /* Increase border width */
 }
 
 .section-title-container {
@@ -188,16 +315,44 @@ li, a {
     flex-direction: column; /* Show the second div only when the checkbox is checked */
   }
   
+/* DESIRED EMPLOYMENT */
+.radio-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between radio buttons and labels */
+}
+
+.radio-buttons input[type="radio"] {
+    appearance: none; /* Hide default radio button */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    width: 15px; /* Width of custom radio button */
+    height: 15px; /* Height of custom radio button */
+    border: 1px solid var(--dark-gray); /* Border color */
+    border-radius: 80%; /* Rounded border to make it circular */
+    cursor: pointer; /* Cursor style */
+}
+
+.radio-buttons input[type="radio"]:checked {
+    background-color: var(--medium-purple); /* Background color when checked */
+}
+
 
 /* EDUCATION SECTION */
 .education-entry {
     border: 1px solid #CED4DA;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 15px 10px;
+}
+
+.education-input-fields {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    padding: 10px;
-    margin: 10px;
     gap: 10px;
+    margin: 0px 5px 7.5px 3px;
 }
 
 /* WORK EXPERIENCE SECTION */
@@ -205,7 +360,7 @@ li, a {
     border: 1px solid #CED4DA;
     border-radius: 20px;
     padding: 10px;
-    margin: 10px;
+    margin: 15px 10px;
 }
 
 .period-div {
@@ -239,71 +394,116 @@ li, a {
     display: block;
 }
 
-
-
-.form-section input[type="text"],
-.form-section input[type="number"],
-.form-section input[type="date"],
-.form-section input[type="email"],
-.form-section textarea,
-.form-section input[type="checkbox"] {
-    /* Remove default styling */
-    appearance: none;
-    /* Reset border, background, and outline */
-    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
-    outline: none;
-    /* Additional styling as needed */
-    padding: 8px 10px;
-    border: 1px solid #BDBDBD;
+/*  SUBMIT SECTION */
+.submit_button {
+    display: block; /* Change display to block for full width */
+    width: 10rem;
+    padding: 12px 10px;
+    margin: 10px 7px; /* Add margin if needed */
     border-radius: 10px;
+    color: var(--light-gray);
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple);
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    border: none;
     box-sizing: border-box;
     font-size: medium;
-    color: #343A40;
-
 }
 
-.form-section input[type="checkbox"] {
-    /* Set checkbox dimensions */
-    width: 20px;
-    height: 20px;
-    /* Style checkbox */
-    border: 1px solid #BDBDBD;
-    border-radius: 3px;
-    background-color: #F8F9FAE6; /* Or set it to whatever background color you want */
-    outline: none;
-    /* Add custom checkmark */
-    position: relative;
+.submit_button:hover {
+    color: var(--light-gray);
+    background-color: var(--medium-purple);
+    border-color: var(--medium-purple);
 }
 
-.form-section input[type="checkbox"]:checked::before {
-    content: "✔";
-    color: #C77DFF;
-    display: block;
-    position: absolute;
-    transform: translate(-65%, -50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    text-align: center;
-    line-height: 10px;
-}
-
-/* Show custom checkmark when checkbox is checked */
-.form-section input[type="checkbox"]:checked::before {
-    opacity: 1;
+.submit_button:active {
+    color: var(--light-gray);
+    background-color: var(--deep-purple);
+    border-color: var(--deep-purple);
 }
 
 
+/* LANDING PAGE */
+.landing_page_header {
+    font-family: "Spline Sans", sans-serif;
+    display: flex;
+    position: fixed;
+    justify-content: flex-end;
+    padding: 30px 10%;
+    align-items: center;
+    width: 100vw;
+    top: 0; /* Position at the top */
+    left: 0; /* Position at the left */
+    z-index: 1000; /* Ensure it is above other content */
+    height: 60px;
+    background-color: transparent;
+}
 
-/* Styling for input elements while active */
-.form-section input[type="text"]:focus,
-.form-section input[type="number"]:focus,
-.form-section input[type="date"]:focus,
-.form-section input[type="email"]:focus,
-.form-section textarea:focus,
-.form-section input[type="checkbox"]:focus {
+.landing_page_nav_links li a{
+    color: #10002B;
+}
+.logo {
+    margin-right: auto;
+    object-fit: contain;
+    max-height: 35px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    background-color: transparent;
+}
+
+.content {
+    display: flex;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
-    border-color: #C77DFF; /* Change border color to blue when active */
-    border-width: 1.5px; /* Increase border width */
+    /* border: 1px solid #10002B; */
 }
 
+.left-side {
+    z-index: 50;
+    display: flex;
+    flex: 0 0 calc(50% - 40px); /* 50% width minus margins */
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 40px 40px 100px;
+    margin: 20px;
+    text-align: left;
+    box-sizing: border-box;
+    /* border: 1px solid #10002B; */
+    overflow: hidden; /* Hide overflow to avoid border causing extra width */
+}
+
+.main-title {
+    font-family: "Work Sans", sans-serif;
+    font-size: 3.7rem;
+    color: #10002B;
+}
+
+.right-side {
+    flex: 0 0 50%; /* 50% width */
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    /* border: 1px solid #10002B; */
+    max-height: 100%;
+    width: 50%;
+}
+
+.laptop_girl {
+    z-index: 40;
+    max-width: 110%;
+    height: auto;
+    box-sizing: border-box;
+    object-fit: contain;
+}

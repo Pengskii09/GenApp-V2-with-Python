@@ -404,6 +404,7 @@ li, a {
     color: var(--light-gray);
     background-color: var(--dark-purple);
     border-color: var(--dark-purple);
+    font-weight: 500;
     font-size: 0.9rem;
     text-align: center;
     text-decoration: none;
@@ -487,6 +488,7 @@ li, a {
     font-family: "Work Sans", sans-serif;
     font-size: 3.7rem;
     color: #10002B;
+    margin-bottom: 10px;
 }
 
 .right-side {
@@ -506,4 +508,97 @@ li, a {
     height: auto;
     box-sizing: border-box;
     object-fit: contain;
+}
+
+/* VIEW DATABASE PAGE */
+.view_database_header {
+    background-image: url('/static/images/ApplicationFormBGV2blurry.png');
+    background-color: #F8F9FA;
+    background-size: cover; /* Scale the background image to cover the entire header */
+    background-position: center; /* Center the background */
+    background-repeat: no-repeat; /* Prevent background image from repeating */
+    background-attachment: fixed;
+    box-shadow: 3px 3px 5px #abb4bb4D; 
+}
+
+/* FILTER AND SORT */
+.filter_and_search_container {
+    display: flex;
+    justify-content:space-around;
+    /* border: 1px solid #10002B; */
+    margin: 20px;
+    gap: 20px;
+    font-size: larger;
+}
+
+.filter_and_search_container > * {
+    margin: 10px; /* Apply 5px margin to all direct children */
+}
+
+.filter_by_container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* CSS for table */
+.main_table {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%; /* Optional: Ensure container does not exceed viewport width */
+    margin: 20px 50px; /* Optional: Add margin for spacing */
+    border-radius: 20px;
+    box-shadow: 0 -3px 5px #6C757D66, /* Top */
+                3px 3px 5px #6C757D66,   /* Right and bottom */
+                -3px 3px 5px #6C757D66;  /* Left */
+}
+
+/* Hide scrollbar for WebKit browsers */
+.main_table::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar width */
+    height: 10px;
+    background: transparent; /* Remove scrollbar background */
+    margin: 10px;
+}
+
+/* Optional: Remove track and thumb styles */
+.main_table::-webkit-scrollbar-track {
+    background-color: transparent; /* Remove scrollbar track color */
+    ;
+}
+
+.main_table::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #CED4DA; /* Remove scrollbar thumb color */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Ensure cells are separated */
+    width: max-content;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* CSS for table header (th) */
+th {
+    background-color: #5A189A; /* Light gray background for headers */
+    color: #F8F9FA;
+    padding: 14px 20px; /* Padding inside header cells */
+    text-align: left;
+}
+
+/* CSS for table data (td) */
+td {
+    border-bottom: 1px solid #ccc; /* Add borders to data cells */
+    padding: 10px 20px; /* Padding inside header cells */
+    box-sizing: border-box;
+}
+
+/* Optional: CSS for alternate row colors */
+tr:nth-child(even) {
+    background-color: #F8F9FA99; /* Light alternate background color */
+}
+
+tr:nth-child(odd) {
+    background-color: #DEE2E6; /* Light alternate background color */
 }

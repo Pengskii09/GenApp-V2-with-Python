@@ -14,7 +14,7 @@ class Applicant(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     middle_initial = db.Column(db.String(5), nullable=True)
     suffix = db.Column(db.String(20), nullable=True)
-    # birth_date = db.Column(db.DateTime)
+    birth_date = db.Column(db.Date)
     address = db.Column(db.String(200), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(100), nullable=False)
@@ -71,7 +71,17 @@ def application_form():
         last_name = request.form['last_name']
         middle_initial = request.form.get('middle_initial', None)
         suffix = request.form.get('suffix', None)
-        # birth_date = request.form.get('birth_date', None)
+        birth_date_str = request.form['birth_date']
+        try:
+            birth_date = datetime.strptime(birth_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            # Handle the case where the date string is in an unexpected format
+            print(f"Error: Could not parse date string '{birth_date_str}'")
+            # You may want to redirect back to the form with an error message
+            return 'Invalid date format. Please use MM-DD-YYYY format.'
+
+
+
         address = request.form['address']
         city = request.form['city']
         state = request.form['state']
@@ -83,7 +93,7 @@ def application_form():
         reason_for_conviction = request.form.get('reason_for_conviction', None)
 
         new_applicant = Applicant(sss_number=sss_number, given_name=given_name, last_name=last_name,
-                                middle_initial=middle_initial, suffix=suffix,
+                                middle_initial=middle_initial, suffix=suffix, birth_date=birth_date,
                                 address=address, city=city, state=state, zip_code=zip_code,
                                 phone_1=phone_1, phone_2=phone_2, email=email,
                                 criminal_conviction_status=criminal_conviction_status,

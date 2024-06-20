@@ -28,44 +28,8 @@ body {
     </nav>
 </header>
 
+<form id="searchForm" method="get" action="{{ url_for('view_database') }}">
 <div>
-    <!-- Search and Filter Section -->
-    <div class="filter_and_search_container">
-        <div class="search_container">
-            <label for="search">Search Last Name:</label>
-            <input type="text" id="search" placeholder="Enter keywords...">
-        </div>
-
-        <div class="filter_by_container">
-            <p>Filter by:</p>
-            <label class="checkbox-label">
-                <input type="checkbox" class="checkbox-input">
-                Developer
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" class="checkbox-input">
-                Designer
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" class="checkbox-input">
-                With Criminal Records
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" class="checkbox-input">
-                No Criminal Records
-            </label>
-        </div>
-        
-        <div class="sort_by_container">
-            <p>Sort by:</p>
-            <label for="sort">Last Name:</label>
-                <select id="sort">
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-                </select>
-        </div>
-    </div>
-
     <!-- Table View -->
     <div class="main_table">
         <table>
@@ -85,47 +49,89 @@ body {
                 <th>Email</th>
                 <th>Criminal Conviction Status</th>
                 <th>Reason for Conviction</th>
+                <th>Employment Type</th>
+                <th>Position Applying For</th>
+                <th>Desired Salary</th>
+                <th>Start Date</th>
+
+                <!-- Education Section -->
+                <th>School</th>
+                <th>Location</th>
+                <th>Date Graduated</th>
+                <th>Attainment</th>
+
+                <!-- Major Skills -->
+                <th>Major Skills</th>
+                <!-- Confirm Submission -->
+                <th>Signature</th>
+                <th>Date of Application</th>
+
                 <th>Actions</th>
             </tr>
-            {% for applicant in applications %}
-                <tr>
-                    <td>{{ applicant.sss_number }}</td>
-                    <td>{{ applicant.given_name }}</td>
-                    <td>{{ applicant.last_name }}</td>
-                    <td>{{ applicant.middle_initial }}</td>
-                    <td>{{ applicant.suffix }}</td>
-                    <td>{{ applicant.birth_date }}</td>
-                    <td>{{ applicant.address }}</td>
-                    <td>{{ applicant.city }}</td>
-                    <td>{{ applicant.state }}</td>
-                    <td>{{ applicant.zip_code }}</td>
-                    <td>{{ applicant.phone_1 }}</td>
-                    <td>{{ applicant.phone_2 }}</td>
-                    <td>{{ applicant.email }}</td>
-                    <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
-                    <td>{{ applicant.reason_for_conviction }}</td>
-                    <td class="action-column">
-                        <a href="#" onclick="updateAction();">Update</a>
-                        <a href="#" onclick="deleteAction();">Delete</a>
-                    </td>
-                    <style>
-                        /* Define a class for the column */
-                        .action-column {
-                            text-align: center; /* Center align content */
-                        }
-                    
-                        .action-column a {
-                            display: block; /* Display as block to arrange vertically */
-                            margin-bottom: 0.5px; /* Space between links */
-                            text-decoration: none; /* Underline style */
-                            cursor: pointer; /* Show pointer cursor on hover */
-                        }
-                    </style>
-                </tr>
+            {% for applicant in applicants %}
+            <tr>
+                <td>{{ applicant.sss_number }}</td>
+                <td>{{ applicant.given_name }}</td>
+                <td>{{ applicant.last_name }}</td>
+                <td>{{ applicant.middle_initial }}</td>
+                <td>{{ applicant.suffix }}</td>
+                <td>{{ applicant.birth_date }}</td>
+                <td>{{ applicant.address }}</td>
+                <td>{{ applicant.city }}</td>
+                <td>{{ applicant.state }}</td>
+                <td>{{ applicant.zip_code }}</td>
+                <td>{{ applicant.phone_1 }}</td>
+                <td>{{ applicant.phone_2 }}</td>
+                <td>{{ applicant.email }}</td>
+                <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
+                <td>{{ applicant.reason_for_conviction }}</td>
+                <td>{{ applicant.employment_type }}</td>
+                <td>{{ applicant.position_applying_for }}</td>
+                <td>{{ applicant.desired_salary }}</td>
+                <td>{{ applicant.start_date }}</td>
+
+                <!-- Education Section -->
+                {% if applicant.education_entries %}
+                {% for education_entry in applicant.education_entries %}
+                <td>{{ education_entry.school }}</td>
+                <td>{{ education_entry.location }}</td>
+                <td>{{ education_entry.date_graduated }}</td>
+                <td>{{ education_entry.attainment }}</td>
+                {% endfor %}
+                {% else %}
+                    <td colspan="4">No Education Entries</td>
+                {% endif %}
+
+                <!-- Major Skills -->
+                <td>{{ applicant.major_skills }}</td>
+                
+                <!-- Confirm Submission -->
+                <td>{{ applicant.signature }}</td>
+                <td>{{ applicant.date_of_application_submission }}</td>
+
+                <!-- Action Column -->
+                <td class="action-column">
+                    <a href="#" onclick="updateAction();">Update</a>
+                    <a href="#" onclick="deleteAction();">Delete</a>
+                </td>
+                <style>
+                    /* Define a class for the column */
+                    .action-column {
+                        text-align: center; /* Center align content */
+                    }
+                
+                    .action-column a {
+                        display: block; /* Display as block to arrange vertically */
+                        margin-bottom: 0.5px; /* Space between links */
+                        text-decoration: none; /* Underline style */
+                        cursor: pointer; /* Show pointer cursor on hover */
+                    }
+                </style>
+            </tr>
             {% endfor %}
         </table>
     </div>
 </div>
-
+</form>
 
 {% endblock %}

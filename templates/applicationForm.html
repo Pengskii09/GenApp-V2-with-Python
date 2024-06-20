@@ -120,7 +120,93 @@ body {
             </div>
         </div>
     </section>
+    
+    <section id="desired-employment" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Desired Employment</h1>
+        </div>  
 
+        <div class="all-inputs-container">
+            <div class="input-box">
+                <label class="input-label">Employment Type</label>
+                <div class="radio-buttons">
+                    <input type="radio" id="full_time" name="employment_type" value="Full Time">
+                    <label for="full_time">Full Time</label>
+                    <input type="radio" id="part_time" name="employment_type" value="Part Time">
+                    <label for="part_time">Part Time</label>
+                </div>
+            </div>
+            
+            <div class="input-box">
+                <label for="position_applying_for" class="input-label">Position Applying For</label>
+                <input type="text" id="position_applying_for" name="position_applying_for" required>
+            </div>
+            
+            <div class="input-box">
+                <label for="desired_salary" class="input-label">Desired Salary ($)</label>
+                <input type="number" id="desired_salary" name="desired_salary" required>
+            </div>
+            
+            <div class="input-box">
+                <label for="start_date" class="input-label">Date You Can Start</label>
+                <input type="date" id="start_date" name="start_date" required>
+            </div>
+                
+        
+    </section>
+
+    <section id="education" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Education</h1>
+        </div>  
+
+        <div class="all-inputs-container">
+            <p>
+                You may have multiple entries for each educational level.
+            </p>
+        
+            <div id="education-section" class="education-grid">
+                <div class="education-entry">
+                    <p class="entry_count_label">Entry 1</p>
+                    <div class="education-input-fields"> 
+                        <div class="input-box">
+                            <label for="school" class="input-label">School</label>
+                            <input type="text" name="school[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="location" class="input-label">Location</label>
+                            <input type="text" name="location[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="date-graduated" class="input-label">Date Graduated</label>
+                            <input type="date" name="date-graduated[]" required>
+                        </div>
+                        <div class="input-box">
+                            <label for="attainment" class="input-label">Attainment</label>
+                            <input type="text" name="attainment[]" required>
+                        </div>
+                    </div>
+                    <button type="button" class="delete-bt button_version_1 " onclick="deleteEducationEntry(this)">Delete Entry</button>
+                </div>
+            </div>
+            
+            <button type="button" class="button_version_1" onclick="addEducation()">Add Another Entry</button>
+        </div>
+    </section>
+
+    <section id="major-skills" class="form-section">
+        <div class="section-title-container">
+            <h1 class="section-title">Major Skills</h1>
+        </div>  
+    
+        <div class="all-inputs-container">
+            <div class="input-box">
+                <label for="major_skills" class="input-label">List Major Skills (separate by comma):</label>
+                <textarea id="major_skills" name="major_skills" rows="4" placeholder="ex. Video Editing, Photo Editing, Graphic Design" required></textarea>
+            </div>
+            
+        </div>
+    </section>
     
     <section id="confirm-submission" class="form-section">
         <div class="section-title-container">

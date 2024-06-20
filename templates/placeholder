@@ -33,44 +33,7 @@
         
     </section>
 
-    <section id="education" class="form-section">
-        <div class="section-title-container">
-            <h1 class="section-title">Education</h1>
-        </div>  
 
-        <div class="all-inputs-container">
-            <p>
-                You may have multiple entries for each educational level.
-            </p>
-        
-            <div id="education-section" class="education-grid">
-                <div class="education-entry">
-                    <p class="entry_count_label">Entry 1</p>
-                    <div class="education-input-fields"> 
-                        <div class="input-box">
-                            <label for="school" class="input-label">School</label>
-                            <input type="text" name="school[]" required>
-                        </div>
-                        <div class="input-box">
-                            <label for="location" class="input-label">Location</label>
-                            <input type="text" name="location[]" required>
-                        </div>
-                        <div class="input-box">
-                            <label for="date-graduated" class="input-label">Date Graduated</label>
-                            <input type="date" name="date-graduated[]" required>
-                        </div>
-                        <div class="input-box">
-                            <label for="attainment" class="input-label">Attainment</label>
-                            <input type="text" name="attainment[]" required>
-                        </div>
-                    </div>
-                    <button type="button" class="delete-bt button_version_1 " onclick="deleteEducationEntry(this)">Delete Entry</button>
-                </div>
-            </div>
-            
-            <button type="button" class="button_version_1" onclick="addEducation()">Add Another Entry</button>
-        </div>
-    </section>
 
     <section id="work-experience" class="form-section">
         <div class="section-title-container">
@@ -154,3 +117,44 @@
             
         </div>
     </section>
+
+
+
+
+
+    <!-- Search and Filter Section -->
+    <div class="filter_and_search_container">
+        <div class="search_container">
+            <label for="search">Search Last Name:</label>
+            <input type="text" id="search" placeholder="Enter keywords...">
+        </div>
+
+        <div class="filter_by_container">
+            <p>Filter by:</p>
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                Developer
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                Designer
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                With Criminal Records
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                No Criminal Records
+            </label>
+        </div>
+        
+        <div class="sort_by_container">
+            <p>Sort by:</p>
+            <label for="sort">Last Name:</label>
+                <select id="sort">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+                </select>
+        </div>
+    </div>

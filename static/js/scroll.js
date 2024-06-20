@@ -52,8 +52,8 @@ let educationEntryCount = 1; // Track the number of education entries dynamicall
                     <input type="text" name="location[]" required>
                 </div>
                 <div class="input-box">
-                    <label for="date-graduated" class="input-label">Date Graduated</label>
-                    <input type="date" name="date-graduated[]" required>
+                    <label for="date_graduated" class="input-label">Date Graduated</label>
+                    <input type="date" name="date_graduated[]" required>
                 </div>
                 <div class="input-box">
                     <label for="attainment" class="input-label">Attainment</label>

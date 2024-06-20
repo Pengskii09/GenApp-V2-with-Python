@@ -91,16 +91,29 @@ body {
                 <td>{{ applicant.start_date }}</td>
 
                 <!-- Education Section -->
-                {% if applicant.education_entries %}
-                {% for education_entry in applicant.education_entries %}
-                <td>{{ education_entry.school }}</td>
-                <td>{{ education_entry.location }}</td>
-                <td>{{ education_entry.date_graduated }}</td>
-                <td>{{ education_entry.attainment }}</td>
-                {% endfor %}
-                {% else %}
-                    <td colspan="4">No Education Entries</td>
-                {% endif %}
+                <!-- Education Section -->
+                <!-- Education Section -->
+                <td>
+                    {% for record in applicant.education %}
+                        {{ record.school }}<br>
+                    {% endfor %}
+                </td>
+
+                <td>
+                    {% for record in applicant.education %}
+                        {{ record.location }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.education %}
+                        {{ record.attainment }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.education %}
+                        {{ record.date_graduated }}<br>
+                    {% endfor %}
+                </td>
 
                 <!-- Major Skills -->
                 <td>{{ applicant.major_skills }}</td>

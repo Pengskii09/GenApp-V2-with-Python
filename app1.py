@@ -47,6 +47,7 @@ def application_form():
         location = request.form.getlist('location[]')
         date_graduated = request.form.getlist('date-graduated[]')
         attainment = request.form.getlist('attainment[]')
+
         # #WORK EXPERIENCE
         # company_name = request.form.getlist('company_name[]')
         # period_start = request.form.getlist('period_start[]')
@@ -140,18 +141,37 @@ def application_form():
 
 @app.route('/view-database')
 def view_database():
-    query = '''
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    applicants_query = '''
     SELECT * FROM APPLICANT_TABLE
     INNER JOIN GENERAL_TABLE ON APPLICANT_TABLE.sss_number = GENERAL_TABLE.sss_number
-    INNER JOIN EMPLOYMENT_TABLE ON GENERAL_TABLE.employment_info_key = EMPLOYMENT_TABLE.employment_info_key
-    INNER JOIN EDUCATION_TABLE ON APPLICANT_TABLE.sss_number = EDUCATION_TABLE.sss_number;
+    INNER JOIN EMPLOYMENT_TABLE ON GENERAL_TABLE.employment_info_key = EMPLOYMENT_TABLE.employment_info_key;
+    '''
+    applicants = cursor.execute(applicants_query).fetchall()
+
+    
+    education_query = '''
+    SELECT * FROM EDUCATION_TABLE WHERE sss_number = ?;
     '''
     
-    conn = get_db_connection()
-    applicants = conn.execute(query).fetchall()
+    for applicant in applicants:
+    # Convert the sqlite3.Row object into a dictionary
+        applicant_dict = dict(applicant)
+        sss_number = applicant_dict['sss_number']
+        education_records = cursor.execute(education_query, (sss_number,)).fetchall()
+        
+        education_records_dicts = [dict(record) for record in education_records]
+        
+        applicant_dict['education'] = education_records_dicts
+
+        applicants[applicants.index(applicant)] = applicant_dict
+
     conn.close()
     
     return render_template('viewDatabase.html', applicants=applicants)
+
 
 @app.route('/<string:sss_number>/update', methods=('GET', 'POST'))
 def update(sss_number):

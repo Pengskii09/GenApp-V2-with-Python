@@ -60,8 +60,25 @@ body {
                 <th>Date Graduated</th>
                 <th>Attainment</th>
 
+                <!-- Work Experience Section -->
+                    <!-- Multi Valued Tables -->
+                <th>Company Name</th>
+                <th>Period Start</th>
+                <th>Period End</th>
+                <th>Position</th>
+                <th>Reason for Leaving</th>
+
+                    <!-- Others -->
+                <th>Permission to Contact Present Employer</th>
+                <th>If no, why?</th>
+                <th>Name of Supervisor</th>
+                <th>Supervisor Contact Number</th>
+                
+
                 <!-- Major Skills -->
                 <th>Major Skills</th>
+
+
                 <!-- Confirm Submission -->
                 <th>Signature</th>
                 <th>Date of Application</th>
@@ -87,11 +104,9 @@ body {
                 <td>{{ applicant.reason_for_conviction }}</td>
                 <td>{{ applicant.employment_type }}</td>
                 <td>{{ applicant.position_applying_for }}</td>
-                <td>{{ applicant.desired_salary }}</td>
+                <td>${{ applicant.desired_salary }}</td>
                 <td>{{ applicant.start_date }}</td>
 
-                <!-- Education Section -->
-                <!-- Education Section -->
                 <!-- Education Section -->
                 <td>
                     {% for record in applicant.education %}
@@ -106,14 +121,75 @@ body {
                 </td>
                 <td>
                     {% for record in applicant.education %}
-                        {{ record.attainment }}<br>
+                        {{ record.date_graduated }}<br>
                     {% endfor %}
                 </td>
                 <td>
                     {% for record in applicant.education %}
-                        {{ record.date_graduated }}<br>
+                        {{ record.attainment }}<br>
                     {% endfor %}
                 </td>
+
+                <!-- Work Experience Section -->
+                    <!-- Multi Valued Table -->
+                <td>
+                    {% for record in applicant.work_experience %}
+                        {{ record.company_name }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.work_experience %}
+                        {{ record.period_start }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.work_experience %}
+                        {{ record.period_end }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.work_experience %}
+                        {{ record.position }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for record in applicant.work_experience %}
+                        {{ record.reason_for_leaving }}<br>
+                    {% endfor %}
+                </td>
+
+                    <!-- Others -->
+                <td>
+                    {% if applicant.work_experience %}
+                        {% if applicant.work_experience[0].contact_present_employer == 1 %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    {% else %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if applicant.work_experience %}
+                      {{ applicant.work_experience[0].why_not_contact }}<br>
+                    {% else %}
+
+                    {% endif %}
+                </td>    
+                <td>
+                    {% if applicant.work_experience %}
+                      {{ applicant.work_experience[0].name_of_supervisor }}<br>
+                    {% else %}
+
+                    {% endif %}
+                </td>     
+                <td>
+                    {% if applicant.work_experience %}
+                      {{ applicant.work_experience[0].supervisor_contact }}<br>
+                    {% else %}
+
+                    {% endif %}
+                </td>                   
 
                 <!-- Major Skills -->
                 <td>{{ applicant.major_skills }}</td>

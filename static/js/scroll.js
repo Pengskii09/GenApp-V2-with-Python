@@ -98,12 +98,12 @@ function addWorkExperience() {
         </div>
         <div class="period-div">
             <div class="input-box">
-                <label for="start_date" class="input-label">Start Date</label>
-                <input type="date" name="start_date[]" required>
+                <label for="period_start" class="input-label">Start Date</label>
+                <input type="date" name="period_start[]" required>
             </div>
             <div class="input-box">
-                <label for="end_date" class="input-label">End Date</label>
-                <input type="date" name="end_date[]" required>
+                <label for="period_end" class="input-label">End Date</label>
+                <input type="date" name="period_end[]" required>
             </div>
         </div>
         <div class="input-box">
@@ -137,7 +137,7 @@ function deleteWorkExperienceEntry(button) {
 
 // Function to toggle the display of supervisor contact information and reason textarea based on checkbox state
 function toggleSupervisorContactInfo() {
-    const checkbox = document.getElementById('present_employer_contact_permission');
+    const checkbox = document.getElementById('contact_present_employer');
     const supervisorContactInfo = document.querySelector('.supervisor-contact-info');
     const reasonTextarea = document.querySelector('.no-contact-reason');
 
@@ -152,7 +152,7 @@ function toggleSupervisorContactInfo() {
 }
 
 // Add event listener to the checkbox to trigger the function when its state changes
-document.getElementById('present_employer_contact_permission').addEventListener('change', toggleSupervisorContactInfo);
+document.getElementById('contact_present_employer').addEventListener('change', toggleSupervisorContactInfo);
 
 // Initial call to the function to ensure correct display on page load
 toggleSupervisorContactInfo();
@@ -160,4 +160,6 @@ toggleSupervisorContactInfo();
 
 // SUBMISSION REVIEW SECTION
 // Set the default value of the date input to the current date
-document.getElementById('date_of_application_submission').valueAsDate = new Date();
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('date_of_application_submission').valueAsDate = new Date();
+// });

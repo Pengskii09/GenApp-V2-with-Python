@@ -65,10 +65,10 @@ with connection:
             period_end DATE NOT NULL,
             position TEXT NOT NULL,
             reason_for_leaving TEXT NOT NULL,
-            contact_present_employer TEXT NOT NULL,
+            contact_present_employer BOOLEAN NOT NULL,
             why_not_contact TEXT,
-            name_of_supervisor TEXT NOT NULL,
-            supervisor_contact TEXT NOT NULL,
+            name_of_supervisor TEXT,
+            supervisor_contact TEXT,
             FOREIGN KEY (sss_number) REFERENCES APPLICANT_TABLE (sss_number)
         );
     """)

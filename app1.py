@@ -9,10 +9,12 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# LANDING PAGE
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# APPLICATION FORM PAGE
 @app.route('/application-form', methods=('GET', 'POST'))
 def application_form():
     
@@ -36,7 +38,8 @@ def application_form():
             reason_for_conviction = request.form['reason_for_conviction']
         else:
             reason_for_conviction = None
-        # #EMPLOYMENT TABLE
+
+        #EMPLOYMENT TABLE
         employment_type = request.form['employment_type']
         position_applying_for = request.form['position_applying_for']
         desired_salary = request.form['desired_salary']
@@ -48,22 +51,28 @@ def application_form():
         date_graduated = request.form.getlist('date-graduated[]')
         attainment = request.form.getlist('attainment[]')
 
-        # #WORK EXPERIENCE
-        # company_name = request.form.getlist('company_name[]')
-        # period_start = request.form.getlist('period_start[]')
-        # period_end = request.form.getlist('period_end')
-        # position = request.form.getlist('position')
-        # reason_for_leaving = request.form.getlist('reason_for_leaving')
-        # contact_present_employer = request.form['contact_present_employer']
-        # why_not_contact = request.form['why_not_contact']
-        # name_of_supervisor = request.form['name_of_supervisor']
-        # supervisor_contact = request.form['supervisor_contact']
+        #WORK EXPERIENCE
+        company_name = request.form.getlist('company_name[]')
+        period_start = request.form.getlist('period_start[]')
+        period_end = request.form.getlist('period_end[]')
+        position = request.form.getlist('position[]')
+        reason_for_leaving = request.form.getlist('reason_for_leaving[]')
+
+        # Handle the contact present employer checkbox and associated fields
+        contact_present_employer = 'contact_present_employer' in request.form
+        if contact_present_employer:
+            name_of_supervisor = request.form['name_of_supervisor']
+            supervisor_contact = request.form['supervisor_contact']
+            why_not_contact = None  # No need to contact reason if checkbox is checked
+        else:
+            name_of_supervisor = None
+            supervisor_contact = None
+            why_not_contact = request.form['why_not_contact']
 
         #GENERAL TABLE
         major_skills = request.form['major_skills']
         date_of_application_submission = request.form['date_of_application_submission']
         signature = request.form['signature']
-
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -107,21 +116,17 @@ def application_form():
                 VALUES (?,?,?,?,?)
                          """, (sss_number, school[i], location[i], date_graduated[i], attainment[i]))
 
-        # for i in range(len(company_name)):
-        #     cursor.execute("""
-        #         INSERT INTO WORK_EXPERIENCE_TABLE(
-        #                 sss_number, 
-        #                 company_name, 
-        #                 period_start, 
-        #                 period_end, 
-        #                 position, 
-        #                 reason_for_leaving, 
-        #                 contact_present_employer, 
-        #                 why_not_contact, 
-        #                 name_of_supervisor, 
-        #                 supervisor_contact) 
-        #         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        #     """, (sss_number, company_name[i], period_start[i], period_end[i], position[i], reason_for_leaving[i], contact_present_employer[i], why_not_contact[i], name_of_supervisor[i], supervisor_contact[i]))
+        for i in range(len(company_name)):
+          cursor.execute("""
+                INSERT INTO WORK_EXPERIENCE_TABLE(
+                    sss_number, company_name, period_start, period_end, position, reason_for_leaving,
+                    contact_present_employer, why_not_contact, name_of_supervisor, supervisor_contact
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                sss_number, company_name[i], period_start[i], period_end[i], position[i], reason_for_leaving[i],
+                contact_present_employer, why_not_contact, name_of_supervisor, supervisor_contact
+            ))
+
 
         cursor.execute("""
             INSERT INTO GENERAL_TABLE(
@@ -139,6 +144,7 @@ def application_form():
         return redirect(url_for('index'))
     return render_template('applicationForm.html')
 
+# VIEW DATABASE PAGE
 @app.route('/view-database')
 def view_database():
     conn = get_db_connection()
@@ -151,28 +157,38 @@ def view_database():
     '''
     applicants = cursor.execute(applicants_query).fetchall()
 
-    
     education_query = '''
     SELECT * FROM EDUCATION_TABLE WHERE sss_number = ?;
     '''
+
+    work_experience_query = '''
+    SELECT * FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?;
+    '''
     
     for applicant in applicants:
-    # Convert the sqlite3.Row object into a dictionary
+        
         applicant_dict = dict(applicant)
         sss_number = applicant_dict['sss_number']
+        # Fetch education records
         education_records = cursor.execute(education_query, (sss_number,)).fetchall()
-        
         education_records_dicts = [dict(record) for record in education_records]
-        
         applicant_dict['education'] = education_records_dicts
 
+        # Fetch work experience records
+        work_experience_records = cursor.execute(work_experience_query, (sss_number,)).fetchall()
+        work_experience_records_dicts = [dict(record) for record in work_experience_records]
+        applicant_dict['work_experience'] = work_experience_records_dicts
+
+        # Update the applicant dictionary in the list
         applicants[applicants.index(applicant)] = applicant_dict
 
     conn.close()
-    
+
     return render_template('viewDatabase.html', applicants=applicants)
 
 
+
+# UPDATE PAGE
 @app.route('/<string:sss_number>/update', methods=('GET', 'POST'))
 def update(sss_number):
     conn = get_db_connection()
@@ -212,6 +228,7 @@ def update(sss_number):
     conn.close()
     return render_template('update.html', applicant=applicant)
 
+# DELETE PAGE?
 @app.route('/<string:sss_number>/delete', methods=('POST',))
 def delete(sss_number):
     conn = get_db_connection()

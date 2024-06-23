@@ -2,12 +2,8 @@ from flask import *
 import sqlite3
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = b'\x8d\x9a\x1f\x0e\x9c\x8b\x1a\x9e\x8f\x1b\x0c\x9d\x8e\x1d'
 
 DATABASE = 'database.db'
-
-
-
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -243,11 +239,11 @@ def delete(sss_number):
     print(f"SSS Number to delete: {sss_number}")
     try:
         conn = get_db_connection()
+        conn.execute('DELETE FROM EMPLOYMENT_TABLE WHERE employment_info_key IN (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)', (sss_number,))
         conn.execute('DELETE FROM APPLICANT_TABLE WHERE sss_number = ?', (sss_number,))
         conn.execute('DELETE FROM EDUCATION_TABLE WHERE sss_number = ?', (sss_number,))
         conn.execute('DELETE FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?', (sss_number,))
         conn.execute('DELETE FROM GENERAL_TABLE WHERE sss_number = ?', (sss_number,))
-        conn.execute('DELETE FROM EMPLOYMENT_TABLE WHERE employment_info_key IN (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)', (sss_number,))
         conn.commit()
         conn.close()
     except Exception as e:

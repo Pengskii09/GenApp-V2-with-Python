@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import *
 import sqlite3
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = b'\x8d\x9a\x1f\x0e\x9c\x8b\x1a\x9e\x8f\x1b\x0c\x9d\x8e\x1d'
+
 DATABASE = 'database.db'
+
+
+
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -141,15 +146,13 @@ def application_form():
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('index'))
     return render_template('applicationForm.html')
 
 # VIEW DATABASE PAGE
 @app.route('/view-database')
 def view_database():
     # Get query parameters for sorting, searching, and filtering
-    sort_by = request.args.getlist('sort_by[]') or ['last_name']
-    sort_order = request.args.getlist('sort_order[]')
+    sort_order = request.args.get('sort_order', 'date_desc')
     categories = request.args.getlist('category[]')
     search_last_name = request.args.get('searchLastName', '')
 
@@ -161,12 +164,12 @@ def view_database():
     '''
     query_params = []
 
-    # Add search functionality
+    #SEARCH functionality
     if search_last_name:
         query += ' WHERE last_name LIKE ?'
         query_params.append('%' + search_last_name + '%')
 
-    # Add category filtering functionality
+    #WHERE categorical sorting functionality
     if categories:
         if 'WHERE' in query:
             query += ' AND'
@@ -183,14 +186,19 @@ def view_database():
                 category_conditions.append("criminal_conviction_status = 0")
         query += ' (' + ' OR '.join(category_conditions) + ')'
 
-    # Add sorting functionality
-    if sort_order:
-        query += ' ORDER BY ' + ', '.join([f'{by} {order}' for by, order in zip(sort_by, sort_order)])
+    #ORDER BY sorting functionality
+    if sort_order == 'last_name_asc':
+        query += ' ORDER BY last_name ASC'
+    elif sort_order == 'last_name_desc':
+        query += ' ORDER BY last_name DESC'
+    elif sort_order == 'date_asc':
+        query += ' ORDER BY GENERAL_TABLE.date_of_application_submission ASC'  
+    elif sort_order == 'date_desc':
+        query += ' ORDER BY GENERAL_TABLE.date_of_application_submission DESC' 
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Execute the query with or without the search parameter
     applicants = cursor.execute(query, query_params).fetchall()
 
     # Queries for fetching additional details
@@ -221,7 +229,7 @@ def view_database():
 
     conn.close()
 
-    return render_template('viewDatabase.html', applicants=applicants, sort_by=sort_by, sort_order=sort_order, categories=categories)
+    return render_template('viewDatabase.html', applicants=applicants, sort_order=sort_order, categories=categories)
 
 
 # UPDATE
@@ -229,8 +237,23 @@ def view_database():
 # def update():
 #     return render_template('update_form.html')
 
+@app.route('/view-database/<string:sss_number>/delete', methods=['POST'])
+def delete(sss_number):
+    print("Delete route accessed")
+    print(f"SSS Number to delete: {sss_number}")
+    try:
+        conn = get_db_connection()
+        conn.execute('DELETE FROM APPLICANT_TABLE WHERE sss_number = ?', (sss_number,))
+        conn.execute('DELETE FROM EDUCATION_TABLE WHERE sss_number = ?', (sss_number,))
+        conn.execute('DELETE FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?', (sss_number,))
+        conn.execute('DELETE FROM GENERAL_TABLE WHERE sss_number = ?', (sss_number,))
+        conn.execute('DELETE FROM EMPLOYMENT_TABLE WHERE employment_info_key IN (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)', (sss_number,))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Error: {str(e)}")
+    return redirect(url_for('view_database', searchLastName=request.form.get('searchLastName', ''), sort_order=request.form.get('sort_order', 'date_desc')))
 
-# DELETE
 
 if __name__ == '__main__':
     app.run(debug=True)

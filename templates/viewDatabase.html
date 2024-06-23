@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
 
-{% block head%} 
+{% block head %} 
 {% endblock %}
 
-
-{% block body%} 
+{% block body %} 
 <!-- Background Image -->
 <style>
 body {
     background-image: url('/static/images/ApplicationFormBGV2blurryGrain.png');
     background-color: #F8F9FA;
-    background-size: cover; /* Cover the entire background */
-    background-position: center; /* Center the background */
-    background-repeat: no-repeat; /* Prevent background image from repeating */
-    min-height: 100vh; /* Ensure the wrapper covers the entire viewport height */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
     background-attachment: fixed;
 }
 </style>
@@ -23,253 +22,234 @@ body {
     <nav>
         <ul class="nav-links landing_page_nav_links">
             <li><a href="{{ url_for('index') }}">Return to Landing Page</a></li>
-            <!-- <li><a href="#about">About</a></li> -->
         </ul>
     </nav>
 </header>
 
 <form id="searchForm" method="get" action="{{ url_for('view_database') }}">
-<div>
-    <h4>Sort By:</h4>
-    <label for="searchLastName">Search by Last Name:</label>
-    <input type="text" id="searchLastName" name="searchLastName">
-    <input type="submit" value="Search">
-
     <div>
-        <label>
-            <input type="checkbox" name="category[]" value="Developer" onchange="submitForm()" {% if 'Developer' in categories %}checked{% endif %}> Developer 
-        </label>
+        <h4>Sort By:</h4>
+        <label for="searchLastName">Search by Last Name:</label>
+        <input type="text" id="searchLastName" name="searchLastName">
+        <input type="submit" value="Search">
+
+        <div>
+            <label>
+                <input type="checkbox" name="category[]" value="Developer" onchange="submitForm()" {% if 'Developer' in categories %}checked{% endif %}> Developer 
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" name="category[]" value="Designer" onchange="submitForm()" {% if 'Designer' in categories %}checked{% endif %}> Designer
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" name="category[]" value="1" onchange="submitForm()" {% if '1' in categories %}checked{% endif %}> Criminal Records ✓
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" name="category[]" value="0" onchange="submitForm()" {% if '0' in categories %}checked{% endif %}> Criminal Record ✕
+            </label>
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">Sort by:</label>
+            <select class="form-control" name="sort_order" onchange="submitForm()">
+                <option value="date_desc" {% if 'date_desc' == sort_order %}selected{% endif %}>Latest</option>
+                <option value="date_asc" {% if 'date_asc' == sort_order %}selected{% endif %}>Oldest</option>
+                <option value="last_name_asc" {% if 'last_name_asc' == sort_order %}selected{% endif %}>Last Name<span>↑</span></option>
+                <option value="last_name_desc" {% if 'last_name_desc' == sort_order %}selected{% endif %}>Last Name<span>↓</span></option>
+            </select>
+        </div>
     </div>
-    <div>
-        <label>
-            <input type="checkbox" name="category[]" value="Designer" onchange="submitForm()" {% if 'Designer' in categories %}checked{% endif %}> Designer
-        </label>
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" name="category[]" value="1" onchange="submitForm()" {% if '1' in categories %}checked{% endif %}> Criminal Records ✓
-        </label>
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" name="category[]" value="0" onchange="submitForm()"{% if '0' in categories %}checked{% endif %}> Criminal Record ✕
-        </label>
-    </div>
-
-    <div class="form-check">
-        <label class="form-check-label">Sort by:</label>
-        <select class="form-control" name="sort_order[]" onchange="submitForm()">
-            <option value="ASC" selected>Last Name<span>&#8593;</span></option>
-            <option value="DESC" {% if 'last_name' in sort_by and sort_order[sort_by.index('last_name')] == 'DESC' %}selected{% endif %}>Last Name<span>&#8595;</span></option>
-        </select>
-    </div>
-    
-    <div class="form-check">
-        <label class="form-check-label">Sort by:</label>
-        <select class="form-control" name="sort_order" onchange="submitForm()">
-            <option value="last_name_asc" {% if 'last_name_asc' == sort_order %}selected{% endif %}>Last Name<span>↑</span></option>
-            <option value="last_name_desc" {% if 'last_name_desc' == sort_order %}selected{% endif %}>Last Name<span>↓</span></option>
-            <option value="date_asc" {% if 'date_asc' == sort_order %}selected{% endif %}>Oldest</option>
-            <option value="date_desc" selected>Latest</option>
-        </select>
-    </div>
-    
-    
-    
-
-
-
-    <!-- Table View -->
-    <div class="main_table">
-        <table>
-            <tr>
-                <th>SSS Number</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Middle Initial</th>
-                <th>Suffix</th>
-                <th>Birth Date</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>State</th>
-                <th>ZIP Code</th>
-                <th>Phone 1</th>
-                <th>Phone 2</th>
-                <th>Email</th>
-                <th>Criminal Conviction Status</th>
-                <th>Reason for Conviction</th>
-                <th>Employment Type</th>
-                <th>Position Applying For</th>
-                <th>Desired Salary</th>
-                <th>Start Date</th>
-
-                <!-- Education Section -->
-                <th>School</th>
-                <th>Location</th>
-                <th>Date Graduated</th>
-                <th>Attainment</th>
-
-                <!-- Work Experience Section -->
-                    <!-- Multi Valued Tables -->
-                <th>Company Name</th>
-                <th>Period Start</th>
-                <th>Period End</th>
-                <th>Position</th>
-                <th>Reason for Leaving</th>
-
-                    <!-- Others -->
-                <th>Permission to Contact Present Employer</th>
-                <th>If no, why?</th>
-                <th>Name of Supervisor</th>
-                <th>Supervisor Contact Number</th>
-                
-
-                <!-- Major Skills -->
-                <th>Major Skills</th>
-
-
-                <!-- Confirm Submission -->
-                <th>Signature</th>
-                <th>Date of Application</th>
-
-                <th>Actions</th>
-            </tr>
-            {% for applicant in applicants %}
-            <tr>
-                <td>{{ applicant.sss_number }}</td>
-                <td>{{ applicant.given_name }}</td>
-                <td>{{ applicant.last_name }}</td>
-                <td>{{ applicant.middle_initial }}</td>
-                <td>{{ applicant.suffix }}</td>
-                <td>{{ applicant.birth_date }}</td>
-                <td>{{ applicant.address }}</td>
-                <td>{{ applicant.city }}</td>
-                <td>{{ applicant.state }}</td>
-                <td>{{ applicant.zip_code }}</td>
-                <td>{{ applicant.phone_1 }}</td>
-                <td>{{ applicant.phone_2 }}</td>
-                <td>{{ applicant.email }}</td>
-                <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
-                <td>{{ applicant.reason_for_conviction }}</td>
-                <td>{{ applicant.employment_type }}</td>
-                <td>{{ applicant.position_applying_for }}</td>
-                <td>${{ applicant.desired_salary }}</td>
-                <td>{{ applicant.start_date }}</td>
-
-                <!-- Education Section -->
-                <td>
-                    {% for record in applicant.education %}
-                        {{ record.school }}<br>
-                    {% endfor %}
-                </td>
-
-                <td>
-                    {% for record in applicant.education %}
-                        {{ record.location }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.education %}
-                        {{ record.date_graduated }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.education %}
-                        {{ record.attainment }}<br>
-                    {% endfor %}
-                </td>
-
-                <!-- Work Experience Section -->
-                    <!-- Multi Valued Table -->
-                <td>
-                    {% for record in applicant.work_experience %}
-                        {{ record.company_name }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.work_experience %}
-                        {{ record.period_start }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.work_experience %}
-                        {{ record.period_end }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.work_experience %}
-                        {{ record.position }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for record in applicant.work_experience %}
-                        {{ record.reason_for_leaving }}<br>
-                    {% endfor %}
-                </td>
-
-                    <!-- Others -->
-                <td>
-                    {% if applicant.work_experience %}
-                        {% if applicant.work_experience[0].contact_present_employer == 1 %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
-                    {% else %}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if applicant.work_experience %}
-                      {{ applicant.work_experience[0].why_not_contact }}<br>
-                    {% else %}
-
-                    {% endif %}
-                </td>    
-                <td>
-                    {% if applicant.work_experience %}
-                      {{ applicant.work_experience[0].name_of_supervisor }}<br>
-                    {% else %}
-
-                    {% endif %}
-                </td>     
-                <td>
-                    {% if applicant.work_experience %}
-                      {{ applicant.work_experience[0].supervisor_contact }}<br>
-                    {% else %}
-
-                    {% endif %}
-                </td>                   
-
-                <!-- Major Skills -->
-                <td>{{ applicant.major_skills }}</td>
-                
-                <!-- Confirm Submission -->
-                <td>{{ applicant.signature }}</td>
-                <td>{{ applicant.date_of_application_submission }}</td>
-
-                <!-- Action Column -->
-                <td class="action-column">
-                    <a href="#" onclick="updateAction();">Delete</a> 
-                    <a href="#" onclick="deleteAction();">Delete</a>
-                </td>
-                <style>
-                    /* Define a class for the column */
-                    .action-column {
-                        text-align: center; /* Center align content */
-                    }
-                
-                    .action-column a {
-                        display: block; /* Display as block to arrange vertically */
-                        margin-bottom: 0.5px; /* Space between links */
-                        text-decoration: none; /* Underline style */
-                        cursor: pointer; /* Show pointer cursor on hover */
-                    }
-                </style>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-</div>
 </form>
+
+<!-- Table View -->
+<div class="main_table">
+    <table>
+        <tr>
+            <th>SSS Number</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Middle Initial</th>
+            <th>Suffix</th>
+            <th>Birth Date</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>ZIP Code</th>
+            <th>Phone 1</th>
+            <th>Phone 2</th>
+            <th>Email</th>
+            <th>Criminal Conviction Status</th>
+            <th>Reason for Conviction</th>
+            <th>Employment Type</th>
+            <th>Position Applying For</th>
+            <th>Desired Salary</th>
+            <th>Start Date</th>
+
+            <!-- Education Section -->
+            <th>School</th>
+            <th>Location</th>
+            <th>Date Graduated</th>
+            <th>Attainment</th>
+
+            <!-- Work Experience Section -->
+            <th>Company Name</th>
+            <th>Period Start</th>
+            <th>Period End</th>
+            <th>Position</th>
+            <th>Reason for Leaving</th>
+
+            <!-- Others -->
+            <th>Permission to Contact Present Employer</th>
+            <th>If no, why?</th>
+            <th>Name of Supervisor</th>
+            <th>Supervisor Contact Number</th>
+
+            <!-- Major Skills -->
+            <th>Major Skills</th>
+
+            <!-- Confirm Submission -->
+            <th>Signature</th>
+            <th>Date of Application</th>
+
+            <th>Actions</th>
+        </tr>
+        {% for applicant in applicants %}
+        <tr>
+            <td>{{ applicant.sss_number }}</td>
+            <td>{{ applicant.given_name }}</td>
+            <td>{{ applicant.last_name }}</td>
+            <td>{{ applicant.middle_initial }}</td>
+            <td>{{ applicant.suffix }}</td>
+            <td>{{ applicant.birth_date }}</td>
+            <td>{{ applicant.address }}</td>
+            <td>{{ applicant.city }}</td>
+            <td>{{ applicant.state }}</td>
+            <td>{{ applicant.zip_code }}</td>
+            <td>{{ applicant.phone_1 }}</td>
+            <td>{{ applicant.phone_2 }}</td>
+            <td>{{ applicant.email }}</td>
+            <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
+            <td>{{ applicant.reason_for_conviction }}</td>
+            <td>{{ applicant.employment_type }}</td>
+            <td>{{ applicant.position_applying_for }}</td>
+            <td>${{ applicant.desired_salary }}</td>
+            <td>{{ applicant.start_date }}</td>
+
+            <!-- Education Section -->
+            <td>
+                {% for record in applicant.education %}
+                    {{ record.school }}<br>
+                {% endfor %}
+            </td>
+
+            <td>
+                {% for record in applicant.education %}
+                    {{ record.location }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.education %}
+                    {{ record.date_graduated }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.education %}
+                    {{ record.attainment }}<br>
+                {% endfor %}
+            </td>
+
+            <!-- Work Experience Section -->
+            <td>
+                {% for record in applicant.work_experience %}
+                    {{ record.company_name }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.work_experience %}
+                    {{ record.period_start }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.work_experience %}
+                    {{ record.period_end }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.work_experience %}
+                    {{ record.position }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for record in applicant.work_experience %}
+                    {{ record.reason_for_leaving }}<br>
+                {% endfor %}
+            </td>
+
+            <!-- Others -->
+            <td>
+                {% if applicant.work_experience %}
+                    {% if applicant.work_experience[0].contact_present_employer == 1 %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% if applicant.work_experience %}
+                    {{ applicant.work_experience[0].why_not_contact }}<br>
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% if applicant.work_experience %}
+                    {{ applicant.work_experience[0].name_of_supervisor }}<br>
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% if applicant.work_experience %}
+                    {{ applicant.work_experience[0].supervisor_contact }}<br>
+                {% else %}
+                {% endif %}
+            </td>
+
+            <!-- Major Skills -->
+            <td>{{ applicant.major_skills }}</td>
+            
+            <!-- Confirm Submission -->
+            <td>{{ applicant.signature }}</td>
+            <td>{{ applicant.date_of_application_submission }}</td>
+
+            <!-- Action Column -->
+            <td class="action-column">
+                <a href="#" onclick="updateAction();">Update</a> 
+                <form action="{{ url_for('delete', sss_number=applicant.sss_number) }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="searchLastName" value="{{ search_last_name }}">
+                    <input type="hidden" name="sort_order" value="{{ sort_order }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+            <style>
+                .action-column {
+                    text-align: center;
+                }
+                .action-column a {
+                    display: block;
+                    margin-bottom: 0.5px;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            </style>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 {% endblock %}

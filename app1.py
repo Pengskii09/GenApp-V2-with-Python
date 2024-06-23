@@ -147,28 +147,65 @@ def application_form():
 # VIEW DATABASE PAGE
 @app.route('/view-database')
 def view_database():
+    # Get query parameters for sorting, searching, and filtering
+    sort_by = request.args.getlist('sort_by[]') or ['last_name']
+    sort_order = request.args.getlist('sort_order[]')
+    categories = request.args.getlist('category[]')
+    search_last_name = request.args.get('searchLastName', '')
+
+    # Base query for fetching applicants
+    query = '''
+    SELECT * FROM APPLICANT_TABLE
+    INNER JOIN GENERAL_TABLE ON APPLICANT_TABLE.sss_number = GENERAL_TABLE.sss_number
+    INNER JOIN EMPLOYMENT_TABLE ON GENERAL_TABLE.employment_info_key = EMPLOYMENT_TABLE.employment_info_key
+    '''
+    query_params = []
+
+    # Add search functionality
+    if search_last_name:
+        query += ' WHERE last_name LIKE ?'
+        query_params.append('%' + search_last_name + '%')
+
+    # Add category filtering functionality
+    if categories:
+        if 'WHERE' in query:
+            query += ' AND'
+        else:
+            query += ' WHERE'
+        category_conditions = []
+        for category in categories:
+            if category in ['Developer', 'Designer']:
+                category_conditions.append(f"position_applying_for = ?")
+                query_params.append(category)
+            elif category == '1':
+                category_conditions.append("criminal_conviction_status = 1")
+            elif category == '0':
+                category_conditions.append("criminal_conviction_status = 0")
+        query += ' (' + ' OR '.join(category_conditions) + ')'
+
+    # Add sorting functionality
+    if sort_order:
+        query += ' ORDER BY ' + ', '.join([f'{by} {order}' for by, order in zip(sort_by, sort_order)])
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    applicants_query = '''
-    SELECT * FROM APPLICANT_TABLE
-    INNER JOIN GENERAL_TABLE ON APPLICANT_TABLE.sss_number = GENERAL_TABLE.sss_number
-    INNER JOIN EMPLOYMENT_TABLE ON GENERAL_TABLE.employment_info_key = EMPLOYMENT_TABLE.employment_info_key;
-    '''
-    applicants = cursor.execute(applicants_query).fetchall()
+    # Execute the query with or without the search parameter
+    applicants = cursor.execute(query, query_params).fetchall()
 
+    # Queries for fetching additional details
     education_query = '''
     SELECT * FROM EDUCATION_TABLE WHERE sss_number = ?;
     '''
-
     work_experience_query = '''
     SELECT * FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?;
     '''
-    
-    for applicant in applicants:
-        
+
+    # Fetch education and work experience for each applicant
+    for i, applicant in enumerate(applicants):
         applicant_dict = dict(applicant)
         sss_number = applicant_dict['sss_number']
+
         # Fetch education records
         education_records = cursor.execute(education_query, (sss_number,)).fetchall()
         education_records_dicts = [dict(record) for record in education_records]
@@ -180,11 +217,12 @@ def view_database():
         applicant_dict['work_experience'] = work_experience_records_dicts
 
         # Update the applicant dictionary in the list
-        applicants[applicants.index(applicant)] = applicant_dict
+        applicants[i] = applicant_dict
 
     conn.close()
 
-    return render_template('viewDatabase.html', applicants=applicants)
+    return render_template('viewDatabase.html', applicants=applicants, sort_by=sort_by, sort_order=sort_order, categories=categories)
+
 
 # UPDATE
 # @app.route('/update_form.html')

@@ -30,6 +30,55 @@ body {
 
 <form id="searchForm" method="get" action="{{ url_for('view_database') }}">
 <div>
+    <h4>Sort By:</h4>
+    <label for="searchLastName">Search by Last Name:</label>
+    <input type="text" id="searchLastName" name="searchLastName">
+    <input type="submit" value="Search">
+
+    <div>
+        <label>
+            <input type="checkbox" name="category[]" value="Developer" onchange="submitForm()" {% if 'Developer' in categories %}checked{% endif %}> Developer 
+        </label>
+    </div>
+    <div>
+        <label>
+            <input type="checkbox" name="category[]" value="Designer" onchange="submitForm()" {% if 'Designer' in categories %}checked{% endif %}> Designer
+        </label>
+    </div>
+    <div>
+        <label>
+            <input type="checkbox" name="category[]" value="1" onchange="submitForm()" {% if '1' in categories %}checked{% endif %}> Criminal Records ✓
+        </label>
+    </div>
+    <div>
+        <label>
+            <input type="checkbox" name="category[]" value="0" onchange="submitForm()"{% if '0' in categories %}checked{% endif %}> Criminal Record ✕
+        </label>
+    </div>
+
+    <div class="form-check">
+        <label class="form-check-label">Sort by:</label>
+        <select class="form-control" name="sort_order[]" onchange="submitForm()">
+            <option value="ASC" selected>Last Name<span>&#8593;</span></option>
+            <option value="DESC" {% if 'last_name' in sort_by and sort_order[sort_by.index('last_name')] == 'DESC' %}selected{% endif %}>Last Name<span>&#8595;</span></option>
+        </select>
+    </div>
+    
+    <div class="form-check">
+        <label class="form-check-label">Sort by:</label>
+        <select class="form-control" name="sort_order" onchange="submitForm()">
+            <option value="last_name_asc" {% if 'last_name_asc' == sort_order %}selected{% endif %}>Last Name<span>↑</span></option>
+            <option value="last_name_desc" {% if 'last_name_desc' == sort_order %}selected{% endif %}>Last Name<span>↓</span></option>
+            <option value="date_asc" {% if 'date_asc' == sort_order %}selected{% endif %}>Oldest</option>
+            <option value="date_desc" selected>Latest</option>
+        </select>
+    </div>
+    
+    
+    
+
+
+
     <!-- Table View -->
     <div class="main_table">
         <table>

@@ -186,56 +186,13 @@ def view_database():
 
     return render_template('viewDatabase.html', applicants=applicants)
 
+# UPDATE
+# @app.route('/update_form.html')
+# def update():
+#     return render_template('update_form.html')
 
 
-# UPDATE PAGE
-@app.route('/<string:sss_number>/update', methods=('GET', 'POST'))
-def update(sss_number):
-    conn = get_db_connection()
-    applicant = conn.execute('SELECT * FROM APPLICANT_TABLE WHERE sss_number = ?', (sss_number,)).fetchone()
-
-    if request.method == 'POST':
-        given_name = request.form['given_name']
-        last_name = request.form['last_name']
-        middle_initial = request.form['middle_initial']
-        suffix = request.form['suffix']
-        birth_date = request.form['birth_date']
-        address = request.form['address']
-        city = request.form['city']
-        state = request.form['state']
-        zip_code = request.form['zip_code']
-        phone_1 = request.form['phone_1']
-        phone_2 = request.form['phone_2']
-        email = request.form['email']
-        criminal_conviction_status = request.form['criminal_conviction_status']
-        reason_for_conviction = request.form['reason_for_conviction']
-
-        conn.execute("""
-            UPDATE APPLICANT_TABLE SET
-                given_name = ?, last_name = ?, middle_initial = ?, suffix = ?,
-                birth_date = ?, address = ?, city = ?, state = ?, zip_code = ?,
-                phone_1 = ?, phone_2 = ?, email = ?, criminal_conviction_status = ?, reason_for_conviction = ?
-            WHERE sss_number = ?
-        """, (
-            given_name, last_name, middle_initial, suffix, birth_date, address, city, state,
-            zip_code, phone_1, phone_2, email, criminal_conviction_status, reason_for_conviction,
-            sss_number
-        ))
-        conn.commit()
-        conn.close()
-        return redirect(url_for('index'))
-
-    conn.close()
-    return render_template('update.html', applicant=applicant)
-
-# DELETE PAGE?
-@app.route('/<string:sss_number>/delete', methods=('POST',))
-def delete(sss_number):
-    conn = get_db_connection()
-    conn.execute('DELETE FROM APPLICANT_TABLE WHERE sss_number = ?', (sss_number,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('index'))
+# DELETE
 
 if __name__ == '__main__':
     app.run(debug=True)

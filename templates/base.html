@@ -16,29 +16,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             var form = document.getElementById('searchForm');
             if (form) {
-                form.addEventListener('submit', function(event) {
-                    var sortBys = document.querySelectorAll('input[name="sort_by[]"]');
-                    var sortOrders = document.querySelectorAll('select[name="sort_order[]"]');
-                    sortBys.forEach(function(sortBy, index) {
-                        if (!sortBy.checked) {
-                            sortOrders[index].disabled = true;
-                        } else {
-                            sortOrders[index].disabled = false;
-                        }
-                    });
-                });
-
+                
                 // Attach the submitForm function to checkbox change events
                 var checkboxes = document.querySelectorAll('input[type="checkbox"]');
                 checkboxes.forEach(function(checkbox) {
                     checkbox.addEventListener('change', submitForm);
-                });
-
-                // Ensure correct disabling of sort order dropdowns on page load
-                var sortBys = document.querySelectorAll('input[name="sort_by[]"]');
-                var sortOrders = document.querySelectorAll('select[name="sort_order[]"]');
-                sortBys.forEach(function(sortBy, index) {
-                    sortOrders[index].disabled = !sortBy.checked;
                 });
             }
         });

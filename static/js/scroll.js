@@ -134,22 +134,39 @@ function deleteWorkExperienceEntry(button) {
 }
 
 
-
-// Function to toggle the display of supervisor contact information and reason textarea based on checkbox state
+// Function to toggle display of supervisor contact info and reason textarea
 function toggleSupervisorContactInfo() {
     const checkbox = document.getElementById('contact_present_employer');
     const supervisorContactInfo = document.querySelector('.supervisor-contact-info');
     const reasonTextarea = document.querySelector('.no-contact-reason');
 
-    // If the checkbox is checked, show the supervisor contact info and hide the reason textarea; otherwise, hide the supervisor contact info and show the reason textarea
     if (checkbox.checked) {
         supervisorContactInfo.style.display = 'block';
         reasonTextarea.style.display = 'none';
+        makeFieldsRequired(true); // Make supervisor fields required
     } else {
         supervisorContactInfo.style.display = 'none';
         reasonTextarea.style.display = 'block';
+        makeFieldsRequired(false); // Make reason textarea required
     }
 }
+
+// Function to make fields required or not required based on display status
+function makeFieldsRequired(required) {
+    const supervisorNameInput = document.getElementById('name_of_supervisor');
+    const supervisorContactInput = document.getElementById('supervisor_contact');
+    const reasonTextarea = document.getElementById('why_not_contact');
+
+    supervisorNameInput.required = required;
+    supervisorContactInput.required = required;
+    reasonTextarea.required = !required;
+}
+
+// Event listener for checkbox change
+document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.getElementById('contact_present_employer');
+    checkbox.addEventListener('change', toggleSupervisorContactInfo);
+});
 
 // Add event listener to the checkbox to trigger the function when its state changes
 document.getElementById('contact_present_employer').addEventListener('change', toggleSupervisorContactInfo);
@@ -163,3 +180,27 @@ toggleSupervisorContactInfo();
 // document.addEventListener('DOMContentLoaded', function() {
 //     document.getElementById('date_of_application_submission').valueAsDate = new Date();
 // });
+
+
+// // POPUP Confirming Submission
+// function confirmSubmission(event) {
+//     event.preventDefault(); // Prevent the default form submission
+//     alert("Your application was successfully submitted!");
+//     window.location.href = "/"; // Replace with your desired URL
+// }
+
+// Delete Button Confirm
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this entry? There is no way to retrieve this data once deleted.");
+}
+
+// Add this script to handle form submission and display confirmation
+document.querySelector('form').addEventListener('submit', function(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Perform any necessary validation or data handling here
+
+    // Display confirmation message
+    alert('Your application has been submitted successfully!');
+});

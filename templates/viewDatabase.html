@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
-{% block head %} 
+{% block head %}
+<title>View Database</title>
 {% endblock %}
 
 {% block body %} 
@@ -27,8 +28,8 @@ body {
 </header>
 
 <form id="searchForm" method="get" action="{{ url_for('view_database') }}">
-    <div>
-        <h4>Sort By:</h4>
+    <div class="filter_and_search_container">
+        <h2>Sort By:</h2>
         <label for="searchLastName">Search by Last Name:</label>
         <input type="text" id="searchLastName" name="searchLastName">
         <input type="submit" value="Search">
@@ -229,22 +230,27 @@ body {
 
             <!-- Action Column -->
             <td class="action-column">
-                <a href="#" onclick="updateAction();">Update</a> 
-                <form action="{{ url_for('delete', sss_number=applicant.sss_number) }}" method="POST" style="display:inline;">
+                <form id="deleteForm" action="{{ url_for('delete', sss_number=applicant.sss_number) }}" method="POST" onsubmit="return confirmDelete();">
                     <input type="hidden" name="searchLastName" value="{{ search_last_name }}">
                     <input type="hidden" name="sort_order" value="{{ sort_order }}">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    
+                    <!-- Update button -->
+                    <button type="button" onclick="updateAction();" class="update_button">Update</button>
+                    
+                    <!-- Delete button -->
+                    <button type="submit" class="delete_button">Delete</button>
                 </form>
             </td>
+            
             <style>
                 .action-column {
                     text-align: center;
+                    display: flex;
+                    flex-direction: row;
                 }
-                .action-column a {
-                    display: block;
-                    margin-bottom: 0.5px;
-                    text-decoration: none;
-                    cursor: pointer;
+            
+                .action-column button {
+                    margin: 5px 5px 5px 0px;
                 }
             </style>
         </tr>

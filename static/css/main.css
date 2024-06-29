@@ -152,7 +152,7 @@ li, a {
 }
 
 .form-section {
-    border: 1px solid #6C757D;
+    border: 2px solid #6C757D;
     border-radius: 20px;
     width: 60%;
     margin: 30px auto;
@@ -523,22 +523,16 @@ li, a {
 
 /* FILTER AND SORT */
 .filter_and_search_container {
-    display: flex;
-    justify-content:space-around;
-    /* border: 1px solid #10002B; */
-    margin: 20px;
-    gap: 20px;
-    font-size: larger;
+    font-size: large;
+    /* border: 1px solid var(--dark-gray); */
+    margin: 10px 40px;
+    padding: 20px;
 }
 
 .filter_and_search_container > * {
-    margin: 10px; /* Apply 5px margin to all direct children */
+    margin-bottom: 5px; /* Adjust the margin size as needed */
 }
 
-.filter_by_container {
-    display: flex;
-    flex-direction: column;
-}
 
 
 /* CSS for table */
@@ -583,16 +577,25 @@ table {
 th {
     background-color: #5A189A; /* Light gray background for headers */
     color: #F8F9FA;
-    padding: 14px 20px; /* Padding inside header cells */
+    padding: 14px 16px 14px 10px; /* Padding inside header cells */
     text-align: left;
 }
 
 /* CSS for table data (td) */
 td {
     border-bottom: 1px solid #ccc; /* Add borders to data cells */
-    padding: 10px 20px; /* Padding inside header cells */
+    padding: 10px 16px 10px 10px; /* Padding inside data cells */
     box-sizing: border-box;
 }
+
+/* Target the 5th and 11th columns */
+table tr td:nth-child(15),
+table tr td:nth-child(19),
+table tr td:nth-child(23),
+table tr td:nth-child(32) {
+    border-right: 0.5px solid #ccc; /* Adjust border color and style as needed */
+}
+
 
 /* Optional: CSS for alternate row colors */
 tr:nth-child(even) {
@@ -601,4 +604,35 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
     background-color: #DEE2E6; /* Light alternate background color */
+}
+
+.update_button {
+    background-color: var(--deep-purple); /* Bootstrap's delete button red color */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.update_button:hover {
+    background-color: var(--dark-purple); /* Darken color on hover */
+}
+
+
+.delete_button {
+    background-color: #dc3545; /* Bootstrap's delete button red color */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.delete_button:hover {
+    background-color: #c82333; /* Darken color on hover */
 }

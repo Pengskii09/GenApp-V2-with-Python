@@ -1,0 +1,179 @@
+<!-- For routes in app1.py -->
+<!-- 
+
+@app.route('/view-database/<string:sss_number>/update', methods =[PUT])
+def update(sss_number):
+    print("Update route accessed")
+    print(f"SSS Number to update: {sss_number}")
+
+    given_name = request.form.get('given_name')
+    last_name = request.form.get('last_name')
+    middle_initial = request.form.get('middle_initial')
+    suffix = request.form.get('suffix')
+    birth_date = request.form.get('birth_date')
+    address = request.form.get('address')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zip_code = request.form.get('zip_code')
+    phone_1 = request.form.get('phone_1')
+    phone_2 = request.form.get('phone_2')
+    email = request.form.get('email')
+    reason_for_conviction = request.form.get('reason_for_conviction')
+    employment_type = request.form.get('employment_type')
+    position_applying_for = request.form.get('position_applying_for')
+    desired_salary = request.form.get('desired_salary')
+    start_date = request.form.get('start_date')
+    major_skills = request.form.get('major_skills')
+
+    try:
+        conn = get_db_connection()
+
+        update_query = """
+        UPDATE APPLICANT_TABLE
+        SET given_name = ?, last_name = ?, middle_initial = ?, suffix = ?, birth_date = ?,
+            address = ?, city = ?, state = ?, zip_code = ?, phone_1 = ?, phone_2 = ?, 
+            email = ?, reason_for_conviction = ?, employment_type = ?,
+            position_applying_for = ?, desired_salary = ?, start_date = ?,
+            major_skills = ?
+        WHERE sss_number = ?
+        """
+        
+        conn.execute(update_query, (given_name, last_name, middle_initial, suffix, birth_date,
+                                    address, city, state, zip_code, phone_1, phone_2,
+                                    email, reason_for_conviction, employment_type, 
+                                    position_applying_for, desired_salary, start_date, 
+                                    major_skills, 
+                                    sss_number))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Error: {str(e)}")
+    return redirect(url_for('view_database', searchLastName=request.form.get('searchLastName', ''), sort_order=request.form.get('sort_order', 'date_desc'))) 
+
+-->
+
+<!-- Add to viewDatabase.html -->
+<!-- 
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+function updateAction(sss_number) {
+    $('#updateModal').modal('show');
+}
+</script> 
+
+-->
+
+<!-- update modal html -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Applicant Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" method="POST" action="{{ url_for('update', sss_number=applicant.sss_number) }}">
+                    <input type="hidden" name="_method" value="PUT">
+
+                    <!-- add or remove parts for update -->
+                    <div class="form-group">
+                        <label for="given_name">First Name</label>
+                        <input type="text" class="form-control" id="given_name" name="given_name" value="{{ applicant.given_name }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ applicant.last_name }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="middle_initial">Middle Initial</label>
+                        <input type="text" class="form-control" id="middle_initial" name="middle_initial" value="{{ applicant.middle_initial }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="suffix">Suffix</label>
+                        <input type="text" class="form-control" id="suffix" name="suffix" value="{{ applicant.suffix }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth_date">Birth Date</label>
+                        <input type="date" class="form-control" id="birth_date" name="birth_date" value="{{ applicant.birth_date }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" value="{{ applicant.address }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ applicant.city }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" id="state" name="state" value="{{ applicant.state }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zip_code">ZIP Code</label>
+                        <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ applicant.zip_code }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone_1">Phone 1</label>
+                        <input type="tel" class="form-control" id="phone_1" name="phone_1" value="{{ applicant.phone_1 }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone_2">Phone 2</label>
+                        <input type="tel" class="form-control" id="phone_2" name="phone_2" value="{{ applicant.phone_2 }}">
+                    </div>
+
+                    div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ applicant.email }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason_for_conviction">Reason for Conviction</label>
+                        <input type="text" class="form-control" id="reason_for_conviction" name="reason_for_conviction" value="{{ applicant.reason_for_conviction }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employment_type">Employment Type</label>
+                        <input type="text" class="form-control" id="employment_type" name="employment_type" value="{{ applicant.employment_type }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position_applying_for">Position Applying For</label>
+                        <input type="text" class="form-control" id="position_applying_for" name="position_applying_for" value="{{ applicant.position_applying_for }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desired_salary">Desired Salary</label>
+                        <input type="number" class="form-control" id="desired_salary" name="desired_salary" value="{{ applicant.desired_salary }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ applicant.start_date }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="major_skills">Major Skills</label>
+                        <input type="text" class="form-control" id="major_skills" name="major_skills" value="{{ applicant.major_skills }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

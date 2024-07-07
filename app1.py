@@ -182,9 +182,9 @@ def view_database():
             query += ' WHERE'
         category_conditions = []
         for category in categories:
-            if category in ['Developer', 'Designer']:
-                category_conditions.append(f"position_applying_for = ?")
-                query_params.append(category)
+            if 'Developer' in category or 'Designer' in category:
+                category_conditions.append(f"position_applying_for LIKE ?")
+                query_params.append(f"%{category}%")
             elif category == '1':
                 category_conditions.append("criminal_conviction_status = 1")
             elif category == '0':

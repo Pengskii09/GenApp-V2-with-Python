@@ -23,14 +23,77 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Checks criminal_conviction_status checkbox and displays additional question based on status
 const checkbox = document.getElementById('criminal_conviction_status');
 const reasonForConvictionDiv = document.querySelector('.reason_for_conviction_div');
+const reasonForConvictionTextarea = document.getElementById('reason_for_conviction');
 
-checkbox.addEventListener('click', function() {
-  if (this.checked) {
-    reasonForConvictionDiv.style.display = 'flex';
-  } else {
-    reasonForConvictionDiv.style.display = 'none';
-  }
+checkbox.addEventListener('change', function() {
+    // Toggle the display of the reasonForConvictionDiv
+    reasonForConvictionDiv.style.display = this.checked ? 'flex' : 'none';
+
+    // Enable or disable the textarea based on the checkbox state
+    reasonForConvictionTextarea.disabled = !this.checked;
+
+    // Clear the textarea if checkbox is unchecked
+    if (!this.checked) {
+        reasonForConvictionTextarea.value = "";
+    }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch('/application-form', {
+            method: 'POST',
+            body: new FormData(form)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Show success message
+                showPopup('Success', data.message);
+                // Optionally, reset the form or redirect
+                // form.reset();
+                // or
+                // window.location.href = '/';
+            } else if (data.status === 'error') {
+                if (data.field) {
+                    // Highlight the field with error
+                    const field = document.getElementById(data.field);
+                    field.classList.add('error');
+                    field.setCustomValidity(data.message);
+                    field.reportValidity();
+
+                    // Remove the error class and message when the user starts typing
+                    field.addEventListener('input', function() {
+                        this.classList.remove('error');
+                        this.setCustomValidity('');
+                    }, { once: true });
+                }
+                // Show error popup
+                showPopup('Error', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showPopup('Error', 'An unexpected error occurred. Please try again later.');
+        });
+    });
+
+    function showPopup(title, message) {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <div class="popup-content">
+                <h2>${title}</h2>
+                <p>${message}</p>
+                <button onclick="this.parentElement.parentElement.remove()">Close</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    }
+});
+
 
 
 let educationEntryCount = 1; // Track the number of education entries dynamically

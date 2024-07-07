@@ -195,12 +195,12 @@ function confirmDelete() {
 }
 
 // Add this script to handle form submission and display confirmation
-document.querySelector('form').addEventListener('submit', function(event) {
+// document.querySelector('form').addEventListener('submit', function(event) {
     // Prevent the default form submission
-    event.preventDefault();
+    // event.preventDefault();
 
     // Perform any necessary validation or data handling here
 
     // Display confirmation message
-    alert('Your application has been submitted successfully!');
-});
+    // alert('Your application has been submitted successfully!');
+// });

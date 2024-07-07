@@ -230,12 +230,12 @@ body {
 
             <!-- Action Column -->
             <td class="action-column">
+                <!-- Update link -->
+                <a href="{{ url_for('update_page', sss_number=applicant.sss_number) }}" class="update_button">Update</a>
+
                 <form id="deleteForm" action="{{ url_for('delete', sss_number=applicant.sss_number) }}" method="POST" onsubmit="return confirmDelete();">
                     <input type="hidden" name="searchLastName" value="{{ search_last_name }}">
                     <input type="hidden" name="sort_order" value="{{ sort_order }}">
-                    
-                    <!-- Update button -->
-                    <button type="button" onclick="updateAction();" class="update_button">Update</button>
                     
                     <!-- Delete button -->
                     <button type="submit" class="delete_button">Delete</button>

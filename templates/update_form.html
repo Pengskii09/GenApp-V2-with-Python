@@ -105,12 +105,12 @@ body {
                 </div>
             </div>
             <div>
-                <div class="criminal-conviction-status-checkbox-div">
+                <div class="criminal-conviction-status-checkbox-div" >
                     <label for="criminal_conviction_status" class="input-label">Have you ever been convicted of a crime other than a minor traffic incident:</label>
                     <input type="checkbox" id="criminal_conviction_status" name="criminal_conviction_status" {% if applicant_data.criminal_conviction_status %}checked{% endif %}>
                 </div>
                 
-                <div class="input-box reason_for_conviction_div">
+                <div class="input-box reason_for_conviction_div" {% if applicant_data.criminal_conviction_status %}style="display: flex;"{% endif %}>
                     <label for="reason_for_conviction" class="input-label">If Yes, please explain:</label>
                     <textarea id="reason_for_conviction" name="reason_for_conviction">{{ applicant_data.reason_for_conviction }}</textarea>
                 </div>
@@ -184,9 +184,11 @@ body {
                             <input type="text" name="attainment[]" value="{{ education.attainment }}" required>
                         </div>
                     </div>
+                    <button type="button" class="delete-bt button_version_1 " onclick="deleteEducationEntry(this)">Delete Entry</button>
                 </div>
                 {% endfor %}
             </div>
+            <button type="button" class="button_version_1" onclick="addEducation()">Add Another Entry</button>
         </div>
     </section>
     
@@ -226,9 +228,11 @@ body {
                         <label for="reason_for_leaving" class="input-label">Reason for Leaving</label>
                         <textarea name="reason_for_leaving[]" required>{{ experience.reason_for_leaving }}</textarea>
                     </div>
+                    <button type="button" class="delete-btn button_version_1" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
                 </div>
                 {% endfor %}
             </div>
+            <button type="button" class="button_version_1" onclick="addWorkExperience()">Add Another Entry</button>
             <div class="present-employer-contact-checkbox-div">
                 <label for="contact_present_employer" class="input-label">May we contact your present employer?</label>
                 <input type="checkbox" id="contact_present_employer" name="contact_present_employer">
@@ -295,4 +299,6 @@ body {
         </div>
     </section>
 </form>
+
+<script src="/static/js/scroll.js"></script>
 {% endblock %}

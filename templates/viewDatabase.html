@@ -217,19 +217,28 @@ body {
             </td>
             <td>
                 {% if applicant.work_experience %}
-                    {{ applicant.work_experience[0].why_not_contact }}<br>
+                    {% if applicant.work_experience[0].contact_present_employer == 0 %}
+                        {{ applicant.work_experience[0].why_not_contact }}<br>
+                    {% else %}
+                    {% endif %}        
                 {% else %}
                 {% endif %}
             </td>
             <td>
                 {% if applicant.work_experience %}
-                    {{ applicant.work_experience[0].name_of_supervisor }}<br>
+                    {% if applicant.work_experience[0].contact_present_employer == 1 %}
+                        {{ applicant.work_experience[0].name_of_supervisor }}<br>
+                    {% else %}
+                    {% endif %}
                 {% else %}
                 {% endif %}
             </td>
             <td>
                 {% if applicant.work_experience %}
+                    {% if applicant.work_experience[0].contact_present_employer == 1 %}
                     {{ applicant.work_experience[0].supervisor_contact }}<br>
+                    {% else %}
+                    {% endif %}
                 {% else %}
                 {% endif %}
             </td>

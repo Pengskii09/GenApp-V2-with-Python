@@ -231,10 +231,38 @@ def view_database():
 
         # Update the applicant dictionary in the list
         applicants[i] = applicant_dict
+    
+    # Calculate aggregate desired_salary data if categories include Developer or Designer
+    desired_salary_aggregate_query = '''
+    SELECT 
+        MAX(desired_salary) AS max_desired_salary, 
+        MIN(desired_salary) AS min_desired_salary, 
+        AVG(desired_salary) AS avg_desired_salary, 
+        SUM(desired_salary) AS total_desired_salary
+    FROM EMPLOYMENT_TABLE
+    WHERE position_applying_for LIKE ?
+    '''
+    aggregate_params = ['%Developer%']
+    desired_salary_aggregates = cursor.execute(desired_salary_aggregate_query, aggregate_params).fetchone()
+
+    # Print the desired_salary aggregates to the terminal
+    print("Max Desired Salary:", desired_salary_aggregates[0])
+    print("Min Desired Salary:", desired_salary_aggregates[1])
+    print("Avg Desired Salary:", desired_salary_aggregates[2])
+    print("Total Desired Salary:", desired_salary_aggregates[3])
+
 
     conn.close()
-
-    return render_template('viewDatabase.html', applicants=applicants, sort_order=sort_order, categories=categories)
+    return render_template(
+        'viewDatabase.html', 
+        applicants=applicants, 
+        sort_order=sort_order, 
+        categories=categories,
+        max_desired_salary=desired_salary_aggregates[0],
+        min_desired_salary=desired_salary_aggregates[1],
+        avg_desired_salary=desired_salary_aggregates[2],
+        total_desired_salary=desired_salary_aggregates[3]
+    )
 
 # UPDATE
 @app.route('/update-page/<string:sss_number>', methods=['GET'])

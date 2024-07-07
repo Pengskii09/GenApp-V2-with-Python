@@ -29,40 +29,53 @@ body {
 
 <form id="searchForm" method="get" action="{{ url_for('view_database') }}">
     <div class="filter_and_search_container">
-        <h2>Sort By:</h2>
-        <label for="searchLastName">Search by Last Name:</label>
-        <input type="text" id="searchLastName" name="searchLastName">
-        <input type="submit" value="Search">
+        <div class="left-db-dashboard">
+                <h2>Sort By:</h2>
+            <label for="searchLastName">Search by Last Name:</label>
+            <input type="text" id="searchLastName" name="searchLastName">
+            <input type="submit" value="Search">
 
-        <div>
-            <label>
-                <input type="checkbox" name="category[]" value="Developer" onchange="submitForm()" {% if 'Developer' in categories %}checked{% endif %}> Developer 
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="checkbox" name="category[]" value="Designer" onchange="submitForm()" {% if 'Designer' in categories %}checked{% endif %}> Designer
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="checkbox" name="category[]" value="1" onchange="submitForm()" {% if '1' in categories %}checked{% endif %}> Criminal Records ✓
-            </label>
-        </div>
-        <div>
-            <label>
-                <input type="checkbox" name="category[]" value="0" onchange="submitForm()" {% if '0' in categories %}checked{% endif %}> Criminal Record ✕
-            </label>
-        </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="category[]" value="Developer" onchange="submitForm()" {% if 'Developer' in categories %}checked{% endif %}> Developer 
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="category[]" value="Designer" onchange="submitForm()" {% if 'Designer' in categories %}checked{% endif %}> Designer
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="category[]" value="1" onchange="submitForm()" {% if '1' in categories %}checked{% endif %}> Criminal Records ✓
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="category[]" value="0" onchange="submitForm()" {% if '0' in categories %}checked{% endif %}> Criminal Record ✕
+                </label>
+            </div>
 
-        <div class="form-check">
-            <label class="form-check-label">Sort by:</label>
-            <select class="form-control" name="sort_order" onchange="submitForm()">
-                <option value="date_desc" {% if 'date_desc' == sort_order %}selected{% endif %}>Latest</option>
-                <option value="date_asc" {% if 'date_asc' == sort_order %}selected{% endif %}>Oldest</option>
-                <option value="last_name_asc" {% if 'last_name_asc' == sort_order %}selected{% endif %}>Last Name<span>↑</span></option>
-                <option value="last_name_desc" {% if 'last_name_desc' == sort_order %}selected{% endif %}>Last Name<span>↓</span></option>
-            </select>
+            <div class="form-check">
+                <label class="form-check-label">Sort by:</label>
+                <select class="form-control" name="sort_order" onchange="submitForm()">
+                    <option value="date_desc" {% if 'date_desc' == sort_order %}selected{% endif %}>Latest</option>
+                    <option value="date_asc" {% if 'date_asc' == sort_order %}selected{% endif %}>Oldest</option>
+                    <option value="last_name_asc" {% if 'last_name_asc' == sort_order %}selected{% endif %}>Last Name<span>↑</span></option>
+                    <option value="last_name_desc" {% if 'last_name_desc' == sort_order %}selected{% endif %}>Last Name<span>↓</span></option>
+                </select>
+            </div>
+
+        </div>
+        <div class="right-db-dashboard">
+            <!-- Display the desired salary aggregates below the sort options -->
+            <div class="salary-aggregates">
+                <h3>Desired Salary Aggregates for Developers:</h3>
+                <p>Maximum Desired Salary: {{ max_desired_salary }}</p>
+                <p>Minimum Desired Salary: {{ min_desired_salary }}</p>
+                <p>Average Desired Salary: {{ avg_desired_salary }}</p>
+                <p>Total Desired Salary: {{ total_desired_salary }}</p>
+            </div>
         </div>
     </div>
 </form>

@@ -527,12 +527,13 @@ li, a {
     /* border: 1px solid var(--dark-gray); */
     margin: 10px 40px;
     padding: 20px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .filter_and_search_container > * {
     margin-bottom: 5px; /* Adjust the margin size as needed */
 }
-
 
 
 /* CSS for table */

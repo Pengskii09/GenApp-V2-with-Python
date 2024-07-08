@@ -165,29 +165,44 @@ def view_database():
     '''
     query_params = []
 
-    #SEARCH functionality
+    conditions = []
+
+    # Search functionality
     if search_last_name:
-        query += ' WHERE last_name LIKE ?'
+        conditions.append('last_name LIKE ?')
         query_params.append('%' + search_last_name + '%')
 
-    #WHERE categorical sorting functionality
-    if categories:
-        if 'WHERE' in query:
-            query += ' AND'
-        else:
-            query += ' WHERE'
-        category_conditions = []
-        for category in categories:
-            if 'Developer' in category or 'Designer' in category:
-                category_conditions.append(f"position_applying_for LIKE ?")
-                query_params.append(f"%{category}%")
-            elif category == '1':
-                category_conditions.append("criminal_conviction_status = 1")
-            elif category == '0':
-                category_conditions.append("criminal_conviction_status = 0")
-        query += ' (' + ' OR '.join(category_conditions) + ')'
+    # Position filtering
+    position_categories = [
+        'Front-End Developer', 'Back-End Developer', 'UI/UX Designer', 
+        'Full-Stack Developer', 'Project Manager', 'Quality Assurance', 
+        'DevOps Engineer', 'Data Scientist', 'Mobile App Developer'
+    ]
+    
+    selected_positions = [cat for cat in categories if cat in position_categories]
+    
+    if selected_positions:
+        position_conditions = []
+        for position in selected_positions:
+            position_conditions.append("position_applying_for LIKE ?")
+            query_params.append(f"%{position}%")
+        conditions.append('(' + ' OR '.join(position_conditions) + ')')
 
-    #ORDER BY sorting functionality
+    # Criminal conviction status filtering
+    criminal_conditions = []
+    if '1' in categories:
+        criminal_conditions.append("criminal_conviction_status = 1")
+    if '0' in categories:
+        criminal_conditions.append("criminal_conviction_status = 0")
+
+    if criminal_conditions:
+        conditions.append('(' + ' OR '.join(criminal_conditions) + ')')
+
+    # Combine all conditions
+    if conditions:
+        query += ' WHERE ' + ' AND '.join(conditions)
+
+    # Sorting
     if sort_order == 'last_name_asc':
         query += ' ORDER BY last_name ASC'
     elif sort_order == 'last_name_desc':
@@ -195,11 +210,16 @@ def view_database():
     elif sort_order == 'date_asc':
         query += ' ORDER BY GENERAL_TABLE.date_of_application_submission ASC'  
     elif sort_order == 'date_desc':
-        query += ' ORDER BY GENERAL_TABLE.date_of_application_submission DESC' 
+        query += ' ORDER BY GENERAL_TABLE.date_of_application_submission DESC'
+    elif sort_order == 'experience_asc':
+        query += ' ORDER BY EMPLOYMENT_TABLE.years_of_experience ASC'
+    elif sort_order == 'experience_desc':
+        query += ' ORDER BY EMPLOYMENT_TABLE.years_of_experience DESC'
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    # Execute query and fetch results
     applicants = cursor.execute(query, query_params).fetchall()
 
     # Queries for fetching additional details

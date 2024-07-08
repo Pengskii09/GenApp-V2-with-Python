@@ -17,6 +17,30 @@ body {
 }
 </style>
 
+<style>
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+    }
+</style>
+
 <header class="application_header">
     <nav>
         <ul class="nav-links">
@@ -41,7 +65,7 @@ body {
             <div class="grid-inputs-container">
                 <div class="input-box sss-number-div">
                     <label for="sss_number" class="input-label">SSS Number</label>
-                    <input type="number" id="sss_number" name="sss_number" value="{{ applicant_data.sss_number }}" required>
+                    <input type="text" id="sss_number" name="sss_number" pattern="\d{2}-\d{7}-\d{1}" value="{{ applicant_data.sss_number }}" required>
                 </div>
                 
                 <div class="name-div">

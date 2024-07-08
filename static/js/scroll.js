@@ -96,6 +96,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const updateForm = document.querySelector('form');  // Adjust this selector if needed
+    updateForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const sssNumber = this.getAttribute('data-sss-number');  // Assuming you've added this attribute to the form
+        
+        fetch(`/view-database/${sssNumber}/update`, {
+            method: 'POST',
+            body: new FormData(this)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showPopup('Success', data.message);
+                // Optionally redirect or refresh the page
+                // window.location.href = '/view-database';
+            } else if (data.status === 'error') {
+                showPopup('Error', `${data.message}<br><br><strong>Details:</strong><br>${data.details}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showPopup('Error', 'An unexpected error occurred. Please try again later.');
+        });
+    });
+
+    function showPopup(title, message) {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <div class="popup-content">
+                <h2>${title}</h2>
+                <p>${message}</p>
+                <button onclick="this.parentElement.parentElement.remove()">Close</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    }
+});
+
+
+
+
 let educationEntryCount = 1; // Track the number of education entries dynamically
 
     function addEducation() {

@@ -1,11 +1,19 @@
 from flask import *
-from werkzeug.exceptions import BadRequest
 import sqlite3
 
 
 app = Flask(__name__)
 
 DATABASE = 'database.db'
+app.secret_key = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
@@ -77,77 +85,111 @@ def application_form():
         #GENERAL TABLE
         major_skills = request.form['major_skills']
         date_of_application_submission = request.form['date_of_application_submission']
-        signature = request.form['signature']
+        if 'signature' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['signature']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            # Read the file contents
+            file_content = file.read()
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO APPLICANT_TABLE(
-                    sss_number, 
-                    given_name, 
-                    last_name, 
-                    middle_initial,
-                    suffix, 
-                    birth_date, 
-                    address, 
-                    city, state, 
-                    zip_code, 
-                    phone_1, 
-                    phone_2, 
-                    email, 
-                    criminal_conviction_status, 
-                    reason_for_conviction) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (sss_number, given_name, last_name, middle_initial, suffix, birth_date, address, city, state, zip_code, phone_1, phone_2, email, criminal_conviction_status, reason_for_conviction))
-
-        cursor.execute("""
-            INSERT INTO EMPLOYMENT_TABLE(
-                    employment_type, 
-                    position_applying_for, 
-                    years_of_experience,
-                    desired_salary, 
-                    start_date) 
-            VALUES (?, ?, ?, ?, ?)
-        """, (employment_type, position_applying_for, years_of_experience, desired_salary, start_date))
-        employment_info_key = cursor.lastrowid
-
-        for i in range(len(school)):
+            conn = get_db_connection()
+            cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO EDUCATION_TABLE(
+                INSERT INTO APPLICANT_TABLE(
                         sss_number, 
-                        school, 
-                        location, 
-                        date_graduated, 
-                        attainment)
-                VALUES (?,?,?,?,?)
-                        """, (sss_number, school[i], location[i], date_graduated[i], attainment[i]))
+                        given_name, 
+                        last_name, 
+                        middle_initial,
+                        suffix, 
+                        birth_date, 
+                        address, 
+                        city, state, 
+                        zip_code, 
+                        phone_1, 
+                        phone_2, 
+                        email, 
+                        criminal_conviction_status, 
+                        reason_for_conviction) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (sss_number, given_name, last_name, middle_initial, suffix, birth_date, address, city, state, zip_code, phone_1, phone_2, email, criminal_conviction_status, reason_for_conviction))
 
-        for i in range(len(company_name)):
             cursor.execute("""
-                INSERT INTO WORK_EXPERIENCE_TABLE(
-                    sss_number, company_name, period_start, period_end, position, reason_for_leaving,
+                INSERT INTO EMPLOYMENT_TABLE(
+                        employment_type, 
+                        position_applying_for, 
+                        years_of_experience,
+                        desired_salary, 
+                        start_date) 
+                VALUES (?, ?, ?, ?, ?)
+            """, (employment_type, position_applying_for, years_of_experience, desired_salary, start_date))
+            employment_info_key = cursor.lastrowid
+
+            for i in range(len(school)):
+                cursor.execute("""
+                    INSERT INTO EDUCATION_TABLE(
+                            sss_number, 
+                            school, 
+                            location, 
+                            date_graduated, 
+                            attainment)
+                    VALUES (?,?,?,?,?)
+                            """, (sss_number, school[i], location[i], date_graduated[i], attainment[i]))
+
+            for i in range(len(company_name)):
+                cursor.execute("""
+                    INSERT INTO WORK_EXPERIENCE_TABLE(
+                        sss_number, company_name, period_start, period_end, position, reason_for_leaving,
+                        contact_present_employer, why_not_contact, name_of_supervisor, supervisor_contact
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    sss_number, company_name[i], period_start[i], period_end[i], position[i], reason_for_leaving[i],
                     contact_present_employer, why_not_contact, name_of_supervisor, supervisor_contact
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
-                sss_number, company_name[i], period_start[i], period_end[i], position[i], reason_for_leaving[i],
-                contact_present_employer, why_not_contact, name_of_supervisor, supervisor_contact
-            ))
+                ))
 
 
-        cursor.execute("""
-            INSERT INTO GENERAL_TABLE(
-                    sss_number,
-                    employment_info_key,
-                    major_skills,
-                    date_of_application_submission,
-                    signature)
-            VALUES (?, ?, ?, ?, ?)
-        """, (sss_number, employment_info_key, major_skills, date_of_application_submission, signature))
-        
-        conn.commit()
-        cursor.close()
-        conn.close()
+            cursor.execute("""
+                INSERT INTO GENERAL_TABLE(
+                        sss_number,
+                        employment_info_key,
+                        major_skills,
+                        date_of_application_submission,
+                        signature)
+                VALUES (?, ?, ?, ?, ?)
+            """, (sss_number, employment_info_key, major_skills, date_of_application_submission, file_content))
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('view_database'))
     return render_template('applicationForm.html')
+
+
+#DISPLAYING THE SIGNATURE IMAGE
+@app.route('/serve-signature/<path:sss_number>')
+def serve_signature(sss_number):
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = '''
+    SELECT signature FROM GENERAL_TABLE WHERE sss_number = ?
+    '''
+    result = cursor.execute(query, (sss_number,)).fetchone()
+
+    if result is None:
+        return "Image not found", 404
+
+    image_data = result['signature']
+    
+    cursor.close()
+    conn.close()
+    
+    return Response(image_data, mimetype='image/png')
+
 
 # VIEW DATABASE PAGE
 @app.route('/view-database')
@@ -159,12 +201,12 @@ def view_database():
 
     # Base query for fetching applicants
     query = '''
-    SELECT * FROM APPLICANT_TABLE
+    SELECT APPLICANT_TABLE.*, GENERAL_TABLE.*, EMPLOYMENT_TABLE.*
+    FROM APPLICANT_TABLE
     INNER JOIN GENERAL_TABLE ON APPLICANT_TABLE.sss_number = GENERAL_TABLE.sss_number
     INNER JOIN EMPLOYMENT_TABLE ON GENERAL_TABLE.employment_info_key = EMPLOYMENT_TABLE.employment_info_key
     '''
     query_params = []
-
     conditions = []
 
     # Search functionality
@@ -245,6 +287,10 @@ def view_database():
         work_experience_records_dicts = [dict(record) for record in work_experience_records]
         applicant_dict['work_experience'] = work_experience_records_dicts
 
+        if applicant_dict['signature']:
+            applicant_dict['signature_url'] = f"/serve-signature/{sss_number}"
+        else:
+            applicant_dict['signature_url'] = None
         # Update the applicant dictionary in the list
         applicants[i] = applicant_dict
     
@@ -280,7 +326,9 @@ def view_database():
         total_desired_salary=total_desired_salary
     )
 
-# UPDATE
+
+
+# DISPLAY OF VALUE FOR UPDATE
 @app.route('/update-page/<string:sss_number>', methods=['GET'])
 def update_page(sss_number):
     try:
@@ -303,202 +351,106 @@ def update_page(sss_number):
                            education_data=education_data,
                            work_experience_data=work_experience_data)
 
-# @app.route('/view-database/<string:sss_number>/update', methods=['POST'])
-# def update(sss_number):
-#     if request.method == 'POST':
-#         try:
-#             conn = get_db_connection()
-            
-#             # Update APPLICANT_TABLE
-#             conn.execute('UPDATE APPLICANT_TABLE SET given_name = ?, middle_initial = ?, last_name = ?, suffix = ?, birth_date = ?, address = ?, city = ?, state = ?, zip_code = ?, phone_1 = ?, phone_2 = ?, email = ?, criminal_conviction_status = ?, reason_for_conviction = ? WHERE sss_number = ?',
-#                          (request.form['given_name'], request.form['middle_initial'], request.form['last_name'], request.form['suffix'], request.form['birth_date'], request.form['address'], request.form['city'], request.form['state'], request.form['zip_code'], request.form['phone_1'], request.form['phone_2'], request.form['email'], '1' if 'criminal_conviction_status' in request.form else '0', request.form['reason_for_conviction'], sss_number))
-            
-#             # Update GENERAL_TABLE
-#             conn.execute('UPDATE GENERAL_TABLE SET major_skills = ? WHERE sss_number = ?',
-#                          (request.form['major_skills'], sss_number))
-            
-#             # Update EMPLOYMENT_TABLE (assuming employment_info_key is fetched correctly)
-#             employment_data = conn.execute('SELECT * FROM EMPLOYMENT_TABLE WHERE employment_info_key IN (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)', (sss_number,)).fetchone()
-
-#             if employment_data:
-#                 conn.execute('UPDATE EMPLOYMENT_TABLE SET employment_type = ?, position_applying_for = ?, desired_salary = ?, start_date = ? WHERE employment_info_key = ?',
-#                              (request.form['employment_type'], request.form['position_applying_for'], request.form['desired_salary'], request.form['start_date'], employment_data['employment_info_key']))
-            
-#             # Commit changes to the database
-#             conn.commit()
-#             conn.close()
-            
-#             flash('Application updated successfully', 'success')
-#         except Exception as e:
-#             print(f"Error: {str(e)}")
-#             flash('An error occurred while updating the application', 'error')
-    
-#     return redirect(url_for('view_database'))
-
-# @app.route('/view-database/<string:sss_number>/update', methods=['POST'])
-# def update(sss_number):
-#     if request.method == 'POST':
-#         try:
-#             conn = get_db_connection()
-            
-#             # Update APPLICANT_TABLE
-#             conn.execute('UPDATE APPLICANT_TABLE SET given_name = ?, middle_initial = ?, last_name = ?, suffix = ?, birth_date = ?, address = ?, city = ?, state = ?, zip_code = ?, phone_1 = ?, phone_2 = ?, email = ?, criminal_conviction_status = ?, reason_for_conviction = ? WHERE sss_number = ?',
-#                          (request.form['given_name'], request.form['middle_initial'], request.form['last_name'], request.form['suffix'], request.form['birth_date'], request.form['address'], request.form['city'], request.form['state'], request.form['zip_code'], request.form['phone_1'], request.form['phone_2'], request.form['email'], '1' if 'criminal_conviction_status' in request.form else '0', request.form['reason_for_conviction'], sss_number))
-            
-#             # Update GENERAL_TABLE
-#             conn.execute('UPDATE GENERAL_TABLE SET major_skills = ? WHERE sss_number = ?',
-#                          (request.form['major_skills'], sss_number))
-            
-#             # Update EMPLOYMENT_TABLE
-#             employment_data = conn.execute('SELECT * FROM EMPLOYMENT_TABLE WHERE employment_info_key IN (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)', (sss_number,)).fetchone()
-
-#             if employment_data:
-#                 conn.execute('UPDATE EMPLOYMENT_TABLE SET employment_type = ?, position_applying_for = ?, desired_salary = ?, start_date = ? WHERE employment_info_key = ?',
-#                              (request.form['employment_type'], request.form['position_applying_for'], request.form['desired_salary'], request.form['start_date'], employment_data['employment_info_key']))
-            
-#             # Update EDUCATION_TABLE
-#             # Assuming education_data is handled as an array in the form
-#             school_list = request.form.getlist('school[]')
-#             location_list = request.form.getlist('location[]')
-#             date_graduated_list = request.form.getlist('date-graduated[]')
-#             attainment_list = request.form.getlist('attainment[]')
-            
-#             # Delete existing education entries for the applicant
-#             conn.execute('DELETE FROM EDUCATION_TABLE WHERE sss_number = ?', (sss_number,))
-            
-#             # Insert updated education entries
-#             for school, location, date_graduated, attainment in zip(school_list, location_list, date_graduated_list, attainment_list):
-#                 conn.execute('INSERT INTO EDUCATION_TABLE (sss_number, school, location, date_graduated, attainment) VALUES (?, ?, ?, ?, ?)',
-#                              (sss_number, school, location, date_graduated, attainment))
-            
-#             # Print all form data for debugging
-#             print("Form Data:")
-#             for key, value in request.form.items():
-#                 print(f"{key}: {value}")
-            
-#             # Commit changes to the database
-#             conn.commit()
-#             conn.close()
-            
-#             flash('Application updated successfully', 'success')
-#         except Exception as e:
-#             print(f"Error: {str(e)}")
-#             flash('An error occurred while updating the application', 'error')
-    
-#     return redirect(url_for('view_database'))
-
+# UPDATE RECORD
 @app.route('/view-database/<string:sss_number>/update', methods=['POST'])
 def update(sss_number):
-    if request.method == 'POST':
-        try:
-            criminal_conviction_status = 'criminal_conviction_status' in request.form
-            reason_for_conviction = None if criminal_conviction_status else request.form.get('reason_for_conviction', '')
-            
-            conn = get_db_connection()
-            cursor = conn.cursor()
+    if request.method != 'POST':
+        flash('Invalid request method.', 'error')
+        return redirect(url_for('view_database'))
 
-            try:
-                # Update APPLICANT_TABLE
-                cursor.execute('''UPDATE APPLICANT_TABLE SET 
-                    given_name = ?, middle_initial = ?, last_name = ?, suffix = ?, 
-                    birth_date = ?, address = ?, city = ?, state = ?, zip_code = ?, 
-                    phone_1 = ?, phone_2 = ?, email = ?, criminal_conviction_status = ?, 
-                    reason_for_conviction = ? WHERE sss_number = ?''',
-                    (request.form['given_name'], request.form['middle_initial'], 
-                     request.form['last_name'], request.form['suffix'], 
-                     request.form['birth_date'], request.form['address'], 
-                     request.form['city'], request.form['state'], 
-                     request.form['zip_code'], request.form['phone_1'], 
-                     request.form['phone_2'], request.form['email'], 
-                     criminal_conviction_status, reason_for_conviction, request.form[sss_number]))
+    new_sss_number = request.form['sss_number']
+    
+    conn = None
+    try:
+        conn = get_db_connection()
+        conn.execute("BEGIN TRANSACTION")
+        cursor = conn.cursor()
 
-                # Update GENERAL_TABLE
-                cursor.execute('UPDATE GENERAL_TABLE SET major_skills = ? WHERE sss_number = ?',
-                               (request.form['major_skills'], sss_number))
+        # Check if the new SSS number already exists (if it's being changed)
+        if sss_number != new_sss_number:
+            existing = cursor.execute("SELECT 1 FROM APPLICANT_TABLE WHERE sss_number = ?", (new_sss_number,)).fetchone()
+            if existing:
+                raise ValueError("The new SSS number already exists in the database.")
 
-                # Update EMPLOYMENT_TABLE
-                employment_data = cursor.execute('''SELECT * FROM EMPLOYMENT_TABLE 
-                    WHERE employment_info_key IN 
-                    (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)''', 
-                    (sss_number,)).fetchone()
+        # Update APPLICANT_TABLE
+        cursor.execute('''UPDATE APPLICANT_TABLE SET 
+            sss_number = ?, given_name = ?, middle_initial = ?, last_name = ?, suffix = ?, 
+            birth_date = ?, address = ?, city = ?, state = ?, zip_code = ?, 
+            phone_1 = ?, phone_2 = ?, email = ?, criminal_conviction_status = ?, 
+            reason_for_conviction = ? WHERE sss_number = ?''',
+            (new_sss_number, request.form['given_name'], request.form['middle_initial'], 
+             request.form['last_name'], request.form['suffix'], 
+             request.form['birth_date'], request.form['address'], 
+             request.form['city'], request.form['state'], 
+             request.form['zip_code'], request.form['phone_1'], 
+             request.form['phone_2'], request.form['email'], 
+             'criminal_conviction_status' in request.form,
+             request.form.get('reason_for_conviction', ''), sss_number))
 
-                if employment_data:
-                    cursor.execute('''UPDATE EMPLOYMENT_TABLE SET 
-                        employment_type = ?, position_applying_for = ?, years_of_experience = ?,
-                        desired_salary = ?, start_date = ? WHERE employment_info_key = ?''',
-                        (request.form['employment_type'], 
-                         request.form['position_applying_for'], 
-                         request.form['years_of_experience'], 
-                         request.form['desired_salary'], 
-                         request.form['start_date'], 
-                         employment_data['employment_info_key']))
+        # Update GENERAL_TABLE
+        cursor.execute('''UPDATE GENERAL_TABLE SET 
+            sss_number = ?, major_skills = ? WHERE sss_number = ?''',
+            (new_sss_number, request.form['major_skills'], sss_number))
 
-                # Update EDUCATION_TABLE
-                cursor.execute('DELETE FROM EDUCATION_TABLE WHERE sss_number = ?', (sss_number,))
-                for school, location, date_graduated, attainment in zip(
-                    request.form.getlist('school[]'),
-                    request.form.getlist('location[]'),
-                    request.form.getlist('date-graduated[]'),
-                    request.form.getlist('attainment[]')):
-                    cursor.execute('''INSERT INTO EDUCATION_TABLE 
-                        (sss_number, school, location, date_graduated, attainment) 
-                        VALUES (?, ?, ?, ?, ?)''',
-                        (sss_number, school, location, date_graduated, attainment))
+        # Update EMPLOYMENT_TABLE (via GENERAL_TABLE)
+        cursor.execute('''UPDATE EMPLOYMENT_TABLE SET 
+            employment_type = ?, position_applying_for = ?, years_of_experience = ?,
+            desired_salary = ?, start_date = ? WHERE employment_info_key = 
+            (SELECT employment_info_key FROM GENERAL_TABLE WHERE sss_number = ?)''',
+            (request.form['employment_type'], request.form['position_applying_for'], 
+             request.form['years_of_experience'], request.form['desired_salary'], 
+             request.form['start_date'], new_sss_number))
 
-                # Update WORK_EXPERIENCE_TABLE
-                cursor.execute('DELETE FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?', (sss_number,))
-                for company_name, period_start, period_end, position, reason_for_leaving in zip(
-                    request.form.getlist('company_name[]'),
-                    request.form.getlist('period_start[]'),
-                    request.form.getlist('period_end[]'),
-                    request.form.getlist('position[]'),
-                    request.form.getlist('reason_for_leaving[]')):
-                    contact_present_employer = '1' if 'contact_present_employer' in request.form else '0'
-                    cursor.execute('''INSERT INTO WORK_EXPERIENCE_TABLE 
-                        (sss_number, company_name, period_start, period_end, position, 
-                        reason_for_leaving, contact_present_employer) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                        (sss_number, company_name, period_start, period_end, position, 
-                         reason_for_leaving, contact_present_employer))
+        # Update EDUCATION_TABLE
+        cursor.execute('DELETE FROM EDUCATION_TABLE WHERE sss_number = ?', (sss_number,))
+        for school, location, date_graduated, attainment in zip(
+            request.form.getlist('school[]'),
+            request.form.getlist('location[]'),
+            request.form.getlist('date-graduated[]'),
+            request.form.getlist('attainment[]')):
+            cursor.execute('''INSERT INTO EDUCATION_TABLE 
+                (sss_number, school, location, date_graduated, attainment) 
+                VALUES (?, ?, ?, ?, ?)''',
+                (new_sss_number, school, location, date_graduated, attainment))
 
-                conn.commit()
-                return jsonify({
-                    'status': 'success',
-                    'message': 'Application updated successfully'
-                })
+        # Update WORK_EXPERIENCE_TABLE
+        cursor.execute('DELETE FROM WORK_EXPERIENCE_TABLE WHERE sss_number = ?', (sss_number,))
+        for company_name, period_start, period_end, position, reason_for_leaving in zip(
+            request.form.getlist('company_name[]'),
+            request.form.getlist('period_start[]'),
+            request.form.getlist('period_end[]'),
+            request.form.getlist('position[]'),
+            request.form.getlist('reason_for_leaving[]')):
+            cursor.execute('''INSERT INTO WORK_EXPERIENCE_TABLE 
+                (sss_number, company_name, period_start, period_end, position, 
+                reason_for_leaving, contact_present_employer) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                (new_sss_number, company_name, period_start, period_end, position, 
+                 reason_for_leaving, 'contact_present_employer' in request.form))
 
-            except sqlite3.IntegrityError as e:
-                conn.rollback()
-                error_message = str(e)
-                return jsonify({
-                    'status': 'error',
-                    'message': 'An error occurred while updating the application.',
-                    'details': f'Database integrity error: {error_message}'
-                })
-            except Exception as e:
-                conn.rollback()
-                return jsonify({
-                    'status': 'error',
-                    'message': 'An unexpected error occurred while updating the application.',
-                    'details': f'Error: {str(e)}'
-                })
-            finally:
-                conn.close()
+        conn.commit()
+        flash('Application updated successfully', 'success')
+        return redirect(url_for('view_database'))
 
-        except Exception as e:
-            return jsonify({
-                'status': 'error',
-                'message': 'An unexpected error occurred.',
-                'details': f'Server error: {str(e)}'
-            })
-
-    return jsonify({
-        'status': 'error',
-        'message': 'Invalid request method.',
-        'details': 'This route only accepts POST requests.'
-    })
-
-
+    except sqlite3.Error as e:
+        if conn:
+            conn.rollback()
+        flash(f'A database error occurred: {str(e)}', 'error')
+        return redirect(url_for('view_database'))
+    except ValueError as e:
+        if conn:
+            conn.rollback()
+        flash(str(e), 'error')
+        return redirect(url_for('view_database'))
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        flash(f'An unexpected error occurred: {str(e)}', 'error')
+        return redirect(url_for('view_database'))
+    finally:
+        if conn:
+            conn.close()
+        
 
 
 # DELETE Function
@@ -517,7 +469,7 @@ def delete(sss_number):
         conn.close()
     except Exception as e:
         print(f"Error: {str(e)}")
-    return redirect(url_for('view_database', searchLastName=request.form.get('searchLastName', ''), sort_order=request.form.get('sort_order', 'date_desc')))
+    return redirect(url_for('/view-database'))
 
 
 if __name__ == '__main__':

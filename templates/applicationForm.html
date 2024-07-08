@@ -60,7 +60,7 @@ body {
 </header>
 
 
-<form method="POST" action="">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('application_form')}}">
     <section id="personal-information" class="form-section">
         <div class="section-title-container">
             <h1 class="section-title">Personal Information</h1>
@@ -94,7 +94,7 @@ body {
                 
                 <div class="input-box">
                     <label for="birth_date" class="input-label">Birth Date</label>
-                    <input type="date" id="birth_date" name="birth_date">
+                    <input type="date" id="birth_date" name="birth_date" required>
                 </div>
                 
                 <div class="address-div">

@@ -18,6 +18,57 @@ body {
 }
 </style>
 
+
+<style>
+    /* Modal styles */
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1; 
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); 
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    .modal-content, #caption {  
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from {transform:scale(0)} 
+        to {transform:scale(1)}
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
 <header class="landing_page_header view_database_header">
     <img src="/static/images/Logo.png" alt="Logo" class="logo">
     <nav>
@@ -26,7 +77,14 @@ body {
         </ul>
     </nav>
 </header>
-
+{# Display flash messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 <form id="searchForm" method="get" action="{{ url_for('view_database') }}">
     <div class="filter_and_search_container">
         <div class="left-db-dashboard">
@@ -287,7 +345,13 @@ body {
             <td>{{ applicant.major_skills }}</td>
             
             <!-- Confirm Submission -->
-            <td>{{ applicant.signature }}</td>
+            <td>
+                {% if applicant.signature_url %}
+                <a href="{{ applicant.signature_url }}" target="_blank">View Signature</a>
+                {% else %}
+                    No Signature available
+                {% endif %}
+            </td>
             <td>{{ applicant.date_of_application_submission }}</td>
 
             <!-- Action Column -->
@@ -318,6 +382,30 @@ body {
         </tr>
         {% endfor %}
     </table>
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        // Function to show the image in modal
+        function showImageModal(imgUrl) {
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "block";
+            modalImg.src = imgUrl;
+        }
+    </script>
 </div>
 
 {% endblock %}

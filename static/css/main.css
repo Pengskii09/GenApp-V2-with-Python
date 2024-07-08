@@ -592,9 +592,9 @@ td {
 
 /* Target the 5th and 11th columns */
 table tr td:nth-child(15),
-table tr td:nth-child(19),
-table tr td:nth-child(23),
-table tr td:nth-child(32) {
+table tr td:nth-child(20),
+table tr td:nth-child(24),
+table tr td:nth-child(33) {
     border-right: 0.5px solid #ccc; /* Adjust border color and style as needed */
 }
 

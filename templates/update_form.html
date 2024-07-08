@@ -160,7 +160,26 @@ body {
             
             <div class="input-box">
                 <label for="position_applying_for" class="input-label">Position Applying For</label>
-                <input type="text" id="position_applying_for" name="position_applying_for" value="{{ employment_data.position_applying_for }}" required>
+                <select id="position_applying_for" name="position_applying_for" required>
+                    <option value="" disabled {% if not employment_data.position_applying_for %}selected{% endif %}>Select a position</option>
+                    <option value="Front-End Developer" {% if employment_data.position_applying_for == 'Front-End Developer' %}selected{% endif %}>Front-End Developer</option>
+                    <option value="UI/UX Designer" {% if employment_data.position_applying_for == 'UI/UX Designer' %}selected{% endif %}>UI/UX Designer</option>
+                    <option value="Back-End Developer" {% if employment_data.position_applying_for == 'Back-End Developer' %}selected{% endif %}>Back-End Developer</option>
+                    <option value="Full-Stack Developer" {% if employment_data.position_applying_for == 'Full-Stack Developer' %}selected{% endif %}>Full-Stack Developer</option>
+                    <option value="Project Manager" {% if employment_data.position_applying_for == 'Project Manager' %}selected{% endif %}>Project Manager</option>
+                    <option value="Quality Assurance" {% if employment_data.position_applying_for == 'Quality Assurance' %}selected{% endif %}>Quality Assurance</option>
+                    <option value="DevOps Engineer" {% if employment_data.position_applying_for == 'DevOps Engineer' %}selected{% endif %}>DevOps Engineer</option>
+                    <option value="Data Scientist" {% if employment_data.position_applying_for == 'Data Scientist' %}selected{% endif %}>Data Scientist</option>
+                    <option value="Mobile App Developer" {% if employment_data.position_applying_for == 'Mobile App Developer' %}selected{% endif %}>Mobile App Developer</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            
+            
+
+            <div class="input-box">
+                <label for="years_of_experience" class="input-label">Years of Experience in Position Applying For</label>
+                <input type="text" id="years_of_experience" name="years_of_experience" value="{{ employment_data.years_of_experience }}" required>
             </div>
             
             <div class="input-box">

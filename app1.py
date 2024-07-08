@@ -54,6 +54,7 @@ def application_form():
             #EMPLOYMENT TABLE
             employment_type = request.form['employment_type']
             position_applying_for = request.form['position_applying_for']
+            years_of_experience = request.form['years_of_experience']
             desired_salary = request.form['desired_salary']
             start_date = request.form['start_date']
             
@@ -111,10 +112,11 @@ def application_form():
                 INSERT INTO EMPLOYMENT_TABLE(
                         employment_type, 
                         position_applying_for, 
+                        years_of_experience,
                         desired_salary, 
                         start_date) 
                 VALUES (?, ?, ?, ?)
-            """, (employment_type, position_applying_for, desired_salary, start_date))
+            """, (employment_type, position_applying_for, years_of_experience, desired_salary, start_date))
             employment_info_key = cursor.lastrowid
 
             for i in range(len(school)):
@@ -252,13 +254,6 @@ def view_database():
     '''
     aggregate_params = ['%Developer%']
     desired_salary_aggregates = cursor.execute(desired_salary_aggregate_query, aggregate_params).fetchone()
-
-    # Print the desired_salary aggregates to the terminal
-    print("Max Desired Salary:", desired_salary_aggregates[0])
-    print("Min Desired Salary:", desired_salary_aggregates[1])
-    print("Avg Desired Salary:", desired_salary_aggregates[2])
-    print("Total Desired Salary:", desired_salary_aggregates[3])
-
 
     conn.close()
     return render_template(
@@ -416,10 +411,11 @@ def update(sss_number):
 
                 if employment_data:
                     cursor.execute('''UPDATE EMPLOYMENT_TABLE SET 
-                        employment_type = ?, position_applying_for = ?, 
+                        employment_type = ?, position_applying_for = ?, years_of_experience = ?,
                         desired_salary = ?, start_date = ? WHERE employment_info_key = ?''',
                         (request.form['employment_type'], 
                          request.form['position_applying_for'], 
+                         request.form['years_of_experience'], 
                          request.form['desired_salary'], 
                          request.form['start_date'], 
                          employment_data['employment_info_key']))

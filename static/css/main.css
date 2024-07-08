@@ -179,6 +179,7 @@ li, a {
 .form-section input[type="date"],
 .form-section input[type="email"],
 .form-section textarea,
+.form-section select,
 .form-section input[type="checkbox"] {
     /* Remove default styling */
     appearance: none;

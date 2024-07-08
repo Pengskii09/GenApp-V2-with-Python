@@ -165,7 +165,25 @@ body {
             
             <div class="input-box">
                 <label for="position_applying_for" class="input-label">Position Applying For</label>
-                <input type="text" id="position_applying_for" name="position_applying_for" required>
+                <select id="position_applying_for" name="position_applying_for" required>
+                    <option value="" disabled selected>Select a position</option>
+                    <option value="Front-End Developer">Front-End Developer</option>
+                    <option value="UI/UX Designer">UI/UX Designer</option>
+                    <option value="Back-End Developer">Back-End Developer</option>
+                    <option value="Full-Stack Developer">Full-Stack Developer</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="Quality Assurance">Quality Assurance</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Mobile App Developer">Mobile App Developer</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>            
+            
+
+            <div class="input-box">
+                <label for="years_of_experience" class="input-label">Years of Experience in Position Applying For</label>
+                <input type="text" id="years_of_experience" name="years_of_experience" required>
             </div>
             
             <div class="input-box">

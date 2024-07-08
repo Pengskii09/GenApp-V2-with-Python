@@ -71,10 +71,10 @@ body {
             <!-- Display the desired salary aggregates below the sort options -->
             <div class="salary-aggregates">
                 <h3>Desired Salary Aggregates for Developers:</h3>
-                <p>Maximum Desired Salary: {{ max_desired_salary }}</p>
-                <p>Minimum Desired Salary: {{ min_desired_salary }}</p>
-                <p>Average Desired Salary: {{ avg_desired_salary }}</p>
-                <p>Total Desired Salary: {{ total_desired_salary }}</p>
+                <p>Maximum Desired Salary: ${{ max_desired_salary }}</p>
+                <p>Minimum Desired Salary: ${{ min_desired_salary }}</p>
+                <p>Average Desired Salary: ${{ avg_desired_salary }}</p>
+                <p>Total Desired Salary: ${{ total_desired_salary }}</p>
             </div>
         </div>
     </div>
@@ -101,6 +101,7 @@ body {
             <th>Reason for Conviction</th>
             <th>Employment Type</th>
             <th>Position Applying For</th>
+            <th>Years of Experience in Related Fields</th>
             <th>Desired Salary</th>
             <th>Start Date</th>
 
@@ -151,6 +152,7 @@ body {
             <td>{{ applicant.reason_for_conviction }}</td>
             <td>{{ applicant.employment_type }}</td>
             <td>{{ applicant.position_applying_for }}</td>
+            <td>{{ applicant.years_of_experience }}</td>
             <td>${{ applicant.desired_salary }}</td>
             <td>{{ applicant.start_date }}</td>
 

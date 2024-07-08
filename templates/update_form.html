@@ -273,13 +273,31 @@ body {
                     </div>
                     <button type="button" class="delete-btn button_version_1" onclick="deleteWorkExperienceEntry(this)">Delete Entry</button>
                 </div>
+                
+            
+                <button type="button" class="button_version_1" onclick="addWorkExperience()">Add Another Entry</button>
+                <div class="present-employer-contact-checkbox-div">
+                    <label for="contact_present_employer" class="input-label">May we contact your present employer?</label>
+                    <input type="checkbox" id="contact_present_employer" name="contact_present_employer" {% if experience.contact_present_employer %}checked{% endif %}>
+                </div>
+                <div class="supervisor-contact-info" {% if experience.contact_present_employer %}style="display: block;"{% endif %}>
+                    <div class="input-box">
+                        <label for="name_of_supervisor" class="input-label">Supervisor's Name</label>
+                        <input type="text" id="name_of_supervisor" name="name_of_supervisor">{{ experience.name_of_supervisor }}
+                    </div>
+                    <div class="input-box">
+                        <label for="supervisor_contact" class="input-label">Supervisor's Contact Number</label>
+                        <input type="text" id="supervisor_contact" name="supervisor_contact">{{ experience.supervisor_contact }}
+                    </div>
+                </div>
+                <div class="no-contact-reason" style="display: flex;">
+                    <div class="input-box">
+                        <label for="why_not_contact" class="input-label">Reason for not contacting present employer:</label>
+                        <textarea id="why_not_contact" name="why_not_contact">{{ experience.why_not_contact }} </textarea>
+                    </div>
+                </div>
                 {% endfor %}
-            </div>
-            <button type="button" class="button_version_1" onclick="addWorkExperience()">Add Another Entry</button>
-            <div class="present-employer-contact-checkbox-div">
-                <label for="contact_present_employer" class="input-label">May we contact your present employer?</label>
-                <input type="checkbox" id="contact_present_employer" name="contact_present_employer">
-            </div>
+            </div>    
         </div>
     </section>
     
@@ -316,7 +334,7 @@ body {
                 <input type="file" id="signature" name="signature" accept="image/*">
                 <!-- Display current signature if already exists -->
                 {% if general_data and general_data.signature %}
-                    <img src="{{ url_for('static', filename='signatures/' + general_data.signature) }}" alt="Current Signature" style="max-width: 200px;">
+                    <img src="{{ general_data.signature }}" alt="Current Signature" style="max-width: 200px;">
                 {% endif %}
             </div>
             

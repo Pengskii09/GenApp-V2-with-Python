@@ -38,104 +38,104 @@ checkbox.addEventListener('change', function() {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+// document.addEventListener('DOMContentLoaded', function() {
+//     const form = document.querySelector('form');
+//     form.addEventListener('submit', function(e) {
+//         e.preventDefault();
         
-        fetch('/application-form', {
-            method: 'POST',
-            body: new FormData(form)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Show success message
-                showPopup('Success', data.message);
-                // Optionally, reset the form or redirect
-                // form.reset();
-                // or
-                // window.location.href = '/';
-            } else if (data.status === 'error') {
-                if (data.field) {
-                    // Highlight the field with error
-                    const field = document.getElementById(data.field);
-                    field.classList.add('error');
-                    field.setCustomValidity(data.message);
-                    field.reportValidity();
+//         fetch('/application-form', {
+//             method: 'POST',
+//             body: new FormData(form)
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.status === 'success') {
+//                 // Show success message
+//                 showPopup('Success', data.message);
+//                 // Optionally, reset the form or redirect
+//                 // form.reset();
+//                 // or
+//                 // window.location.href = '/';
+//             } else if (data.status === 'error') {
+//                 if (data.field) {
+//                     // Highlight the field with error
+//                     const field = document.getElementById(data.field);
+//                     field.classList.add('error');
+//                     field.setCustomValidity(data.message);
+//                     field.reportValidity();
 
-                    // Remove the error class and message when the user starts typing
-                    field.addEventListener('input', function() {
-                        this.classList.remove('error');
-                        this.setCustomValidity('');
-                    }, { once: true });
-                }
-                // Show error popup
-                showPopup('Error', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showPopup('Error', 'An unexpected error occurred. Please try again later.');
-        });
-    });
+//                     // Remove the error class and message when the user starts typing
+//                     field.addEventListener('input', function() {
+//                         this.classList.remove('error');
+//                         this.setCustomValidity('');
+//                     }, { once: true });
+//                 }
+//                 // Show error popup
+//                 showPopup('Error', data.message);
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             showPopup('Error', 'An unexpected error occurred. Please try again later.');
+//         });
+//     });
 
-    function showPopup(title, message) {
-        const popup = document.createElement('div');
-        popup.className = 'popup';
-        popup.innerHTML = `
-            <div class="popup-content">
-                <h2>${title}</h2>
-                <p>${message}</p>
-                <button onclick="this.parentElement.parentElement.remove()">Close</button>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    }
-});
+//     function showPopup(title, message) {
+//         const popup = document.createElement('div');
+//         popup.className = 'popup';
+//         popup.innerHTML = `
+//             <div class="popup-content">
+//                 <h2>${title}</h2>
+//                 <p>${message}</p>
+//                 <button onclick="this.parentElement.parentElement.remove()">Close</button>
+//             </div>
+//         `;
+//         document.body.appendChild(popup);
+//     }
+// });
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const updateForm = document.querySelector('form');  // Adjust this selector if needed
-    updateForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+// document.addEventListener('DOMContentLoaded', function() {
+//     const updateForm = document.querySelector('form');  // Adjust this selector if needed
+//     updateForm.addEventListener('submit', function(e) {
+//         e.preventDefault();
         
-        const sssNumber = this.getAttribute('data-sss-number');  // Assuming you've added this attribute to the form
+//         const sssNumber = this.getAttribute('data-sss-number');  // Assuming you've added this attribute to the form
         
-        fetch(`/view-database/${sssNumber}/update`, {
-            method: 'POST',
-            body: new FormData(this)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                showPopup('Success', data.message);
-                // Optionally redirect or refresh the page
-                // window.location.href = '/view-database';
-            } else if (data.status === 'error') {
-                showPopup('Error', `${data.message}<br><br><strong>Details:</strong><br>${data.details}`);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showPopup('Error', 'An unexpected error occurred. Please try again later.');
-        });
-    });
+//         fetch(`/view-database/${sssNumber}/update`, {
+//             method: 'POST',
+//             body: new FormData(this)
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.status === 'success') {
+//                 showPopup('Success', data.message);
+//                 // Optionally redirect or refresh the page
+//                 // window.location.href = '/view-database';
+//             } else if (data.status === 'error') {
+//                 showPopup('Error', `${data.message}<br><br><strong>Details:</strong><br>${data.details}`);
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             showPopup('Error', 'An unexpected error occurred. Please try again later.');
+//         });
+//     });
 
-    function showPopup(title, message) {
-        const popup = document.createElement('div');
-        popup.className = 'popup';
-        popup.innerHTML = `
-            <div class="popup-content">
-                <h2>${title}</h2>
-                <p>${message}</p>
-                <button onclick="this.parentElement.parentElement.remove()">Close</button>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    }
-});
+//     function showPopup(title, message) {
+//         const popup = document.createElement('div');
+//         popup.className = 'popup';
+//         popup.innerHTML = `
+//             <div class="popup-content">
+//                 <h2>${title}</h2>
+//                 <p>${message}</p>
+//                 <button onclick="this.parentElement.parentElement.remove()">Close</button>
+//             </div>
+//         `;
+//         document.body.appendChild(popup);
+//     }
+// });
 
 
 

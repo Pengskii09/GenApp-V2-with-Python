@@ -241,16 +241,23 @@ def view_database():
     aggregate_params = ['%Developer%']
     desired_salary_aggregates = cursor.execute(desired_salary_aggregate_query, aggregate_params).fetchone()
 
+    
+    # Format the salary aggregates to two decimal places
+    max_desired_salary = f"{desired_salary_aggregates[0]:,.2f}"
+    min_desired_salary = f"{desired_salary_aggregates[1]:,.2f}"
+    avg_desired_salary = f"{desired_salary_aggregates[2]:,.2f}"
+    total_desired_salary = f"{desired_salary_aggregates[3]:,.2f}"
+
     conn.close()
     return render_template(
         'viewDatabase.html', 
         applicants=applicants, 
         sort_order=sort_order, 
         categories=categories,
-        max_desired_salary=desired_salary_aggregates[0],
-        min_desired_salary=desired_salary_aggregates[1],
-        avg_desired_salary=desired_salary_aggregates[2],
-        total_desired_salary=desired_salary_aggregates[3]
+        max_desired_salary=max_desired_salary,
+        min_desired_salary=min_desired_salary,
+        avg_desired_salary=avg_desired_salary,
+        total_desired_salary=total_desired_salary
     )
 
 # UPDATE

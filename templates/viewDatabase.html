@@ -245,7 +245,7 @@ body {
             <td>{{ applicant.phone_2 }}</td>
             <td>{{ applicant.email }}</td>
             <td>{{ "Yes" if applicant.criminal_conviction_status else "No" }}</td>
-            <td>{{ applicant.reason_for_conviction }}</td>
+            <td>{{ applicant.reason_for_conviction if applicant.reason_for_conviction is not none else '' }}</td>
             <td>{{ applicant.employment_type }}</td>
             <td>{{ applicant.position_applying_for }}</td>
             <td>{{ applicant.years_of_experience }}</td>
@@ -316,7 +316,7 @@ body {
             <td>
                 {% if applicant.work_experience %}
                     {% if applicant.work_experience[0].contact_present_employer == 0 %}
-                        {{ applicant.work_experience[0].why_not_contact }}<br>
+                        {{ applicant.work_experience[0].why_not_contact if applicant.work_experience[0].why_not_contact is not none else '' }}<br>
                     {% else %}
                     {% endif %}        
                 {% else %}

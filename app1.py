@@ -72,7 +72,8 @@ def application_form():
         reason_for_leaving = request.form.getlist('reason_for_leaving[]')
 
         # Handle the contact present employer checkbox and associated fields
-        contact_present_employer = 'contact_present_employer' in request.form
+        # contact_present_employer = 'contact_present_employer' in request.form
+        contact_present_employer = 1 if 'contact_present_employer' in request.form else 0
         if contact_present_employer:
             name_of_supervisor = request.form['name_of_supervisor']
             supervisor_contact = request.form['supervisor_contact']
@@ -469,7 +470,7 @@ def delete(sss_number):
         conn.close()
     except Exception as e:
         print(f"Error: {str(e)}")
-    return redirect(url_for('/view-database'))
+    return redirect(url_for('view_database'))
 
 
 if __name__ == '__main__':

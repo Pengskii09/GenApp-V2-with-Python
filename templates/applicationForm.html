@@ -43,7 +43,29 @@ body {
         text-align: center;
     }
 </style>
+<style>
+.flash-messages-container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 5px;
+    }
 
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+</style>
 
 <header class="application_header">
     <nav>
@@ -58,7 +80,17 @@ body {
         </ul>
     </nav>
 </header>
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages-container">
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('application_form')}}">
     <section id="personal-information" class="form-section">

@@ -69,6 +69,47 @@ body {
         cursor: pointer;
     }
 </style>
+<style>
+.flash-messages-container {
+width: 80%;
+margin: 20px auto;
+padding: 10px;
+border-radius: 5px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+</style>
 <header class="landing_page_header view_database_header">
     <img src="/static/images/Logo.png" alt="Logo" class="logo">
     <nav>
@@ -310,7 +351,6 @@ body {
                     {% else %}
                         No
                     {% endif %}
-                {% else %}
                 {% endif %}
             </td>
             <td>
@@ -319,25 +359,20 @@ body {
                         {{ applicant.work_experience[0].why_not_contact if applicant.work_experience[0].why_not_contact is not none else '' }}<br>
                     {% else %}
                     {% endif %}        
-                {% else %}
                 {% endif %}
             </td>
             <td>
                 {% if applicant.work_experience %}
                     {% if applicant.work_experience[0].contact_present_employer == 1 %}
                         {{ applicant.work_experience[0].name_of_supervisor }}<br>
-                    {% else %}
                     {% endif %}
-                {% else %}
                 {% endif %}
             </td>
             <td>
                 {% if applicant.work_experience %}
                     {% if applicant.work_experience[0].contact_present_employer == 1 %}
                     {{ applicant.work_experience[0].supervisor_contact }}<br>
-                    {% else %}
                     {% endif %}
-                {% else %}
                 {% endif %}
             </td>
 

@@ -57,10 +57,10 @@ checkbox1.addEventListener('change', function() {
     supervisorContact.disabled = !this.checked;
 
     if (!this.checked) {
-        nameOfSupervisor.value = '';
-        supervisorContact.value = '';
+        nameOfSupervisor.value = "";
+        supervisorContact.value = "";
     } else {
-        whyNotContact.value = '';
+        whyNotContact.value = "";
     }
 });
 

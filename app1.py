@@ -165,6 +165,7 @@ def application_form():
             conn.commit()
             cursor.close()
             conn.close()
+            flash('Application recorded successfully', 'success')
             return redirect(url_for('view_database'))
     return render_template('applicationForm.html')
 
@@ -353,11 +354,12 @@ def update_page(sss_number):
                            work_experience_data=work_experience_data)
 
 # UPDATE RECORD
-@app.route('/view-database/<string:sss_number>/update', methods=['POST'])
+@app.route('/view-database/<string:sss_number>/update', methods=('GET', 'POST'))
 def update(sss_number):
-    if request.method != 'POST':
+    if request.method not in ['GET', 'POST']:
         flash('Invalid request method.', 'error')
         return redirect(url_for('view_database'))
+
 
     new_sss_number = request.form['sss_number']
     
@@ -424,10 +426,27 @@ def update(sss_number):
             request.form.getlist('reason_for_leaving[]')):
             cursor.execute('''INSERT INTO WORK_EXPERIENCE_TABLE 
                 (sss_number, company_name, period_start, period_end, position, 
-                reason_for_leaving, contact_present_employer) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                reason_for_leaving, contact_present_employer, name_of_supervisor, supervisor_contact, why_not_contact) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                 (new_sss_number, company_name, period_start, period_end, position, 
-                 reason_for_leaving, 'contact_present_employer' in request.form))
+                 reason_for_leaving, 'contact_present_employer' in request.form, 
+                 request.form.get('name_of_supervisor', ''), request.form.get('supervisor_contact', ''),  
+                 request.form.get('why_not_contact', '')))
+
+        # Handle file upload for signature
+        if 'signature' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['signature']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            # Read the file contents
+            file_content = file.read()
+            cursor.execute('''UPDATE GENERAL_TABLE SET 
+                signature = ? WHERE sss_number = ?''',
+                (file_content, new_sss_number))
 
         conn.commit()
         flash('Application updated successfully', 'success')
@@ -451,6 +470,7 @@ def update(sss_number):
     finally:
         if conn:
             conn.close()
+
         
 
 

@@ -354,12 +354,20 @@ def update_page(sss_number):
                            work_experience_data=work_experience_data)
 
 # UPDATE RECORD
-@app.route('/view-database/<string:sss_number>/update', methods=('GET', 'POST'))
+@app.route('/view-database/<string:sss_number>/update', methods=['GET', 'POST'])
 def update(sss_number):
-    if request.method not in ['GET', 'POST']:
+    if request.method not in ['POST', 'GET']:
         flash('Invalid request method.', 'error')
         return redirect(url_for('view_database'))
 
+    if request.method == 'GET':
+        # Assuming you want to redirect to the update form on GET
+        return redirect(url_for('update_page', sss_number=sss_number))
+
+    # Validate sss_number in form data
+    if 'sss_number' not in request.form:
+        flash('SSS number is missing in the form data.', 'error')
+        return redirect(url_for('view_database'))
 
     new_sss_number = request.form['sss_number']
     
@@ -434,15 +442,8 @@ def update(sss_number):
                  request.form.get('why_not_contact', '')))
 
         # Handle file upload for signature
-        if 'signature' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['signature']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            # Read the file contents
+        file = request.files.get('signature')
+        if file and file.filename != '' and allowed_file(file.filename):
             file_content = file.read()
             cursor.execute('''UPDATE GENERAL_TABLE SET 
                 signature = ? WHERE sss_number = ?''',
@@ -466,10 +467,7 @@ def update(sss_number):
         if conn:
             conn.rollback()
         flash(f'An unexpected error occurred: {str(e)}', 'error')
-        return redirect(url_for('view_database'))
-    finally:
-        if conn:
-            conn.close()
+
 
         
 

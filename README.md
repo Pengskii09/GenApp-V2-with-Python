@@ -5,10 +5,13 @@ This is a web-based database project that utilizes SQLite as the database engine
 ## How to Run the Code
 
 1. **Clone the repository:**
+   
    `git clone <repository-url>`
-2. **Navigate the the directory of 'GenApp-V2-with-Python'**
+3. **Navigate the the directory of 'GenApp-V2-with-Python:**
+   
    `cd path/to/GenApp-V2-with-Python`
-3. ***Run app1.py***
+4. **Run app1.py:**
+   
    `python app1.py`
 
 
